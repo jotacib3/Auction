@@ -14,7 +14,7 @@ namespace Entities.Models
         public string UserId { get; set; }
         public bool? Enabled { get; set; }
 
-        public Guid PublicationId { get; set; }
+        public int PublicationId { get; set; }
         public User User { get; set; }
     }
 }

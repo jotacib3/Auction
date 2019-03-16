@@ -18,9 +18,9 @@ namespace Repository
         {
             this._context = context;
         }
-        public DbSet<T> Get()
+        public IQueryable<T> Queryable()
         {
-            return this._context.Set<T>();
+            return this._context.Set<T>().AsQueryable();
         }
         public async Task<IEnumerable<T>> FindAll()
         {
@@ -32,7 +32,7 @@ namespace Repository
             return await this._context.Set<T>().Where(expression).ToListAsync();
         }
 
-        public async Task<T> GetById(Guid Id)
+        public async Task<T> GetById(int Id)
         {
             var entity =await FindByCondition(e => e.Id.Equals(Id));
             return entity.DefaultIfEmpty(new T()).FirstOrDefault();

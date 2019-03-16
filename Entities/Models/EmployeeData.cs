@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,10 +20,14 @@ namespace Entities.Models
         public string InsideNumber { get; set; }
         public string ZipCode { get; set; }
 
-        public Guid StateId { get; set; }
-        public Guid CityId { get; set; }
-
+        public int StateId { get; set; }
+        public int CityId { get; set; }
         public string UserId { get; set; }
+
+        public State State { get; set; }
+        public City City { get; set; }
+        [JsonIgnore]
+        public User User { get; set; }
 
     }
 }

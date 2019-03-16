@@ -8,6 +8,6 @@ namespace Entities.Models
     {
         public int Id { get; set; }
 
-        public string FileNAme { get; set; }
+        public string FileName { get; set; }
     }
 }

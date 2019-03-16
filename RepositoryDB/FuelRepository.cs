@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using ContractsDB;
+using Data;
 using Entities.Models;
 using Repository;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace RepositoryDB
 {
-    public class FuelRepository : RepositoryBase<Fuel>
+    public class FuelRepository : RepositoryBase<Fuel>, IFuelRepository
     {
         public FuelRepository(RepositoryContext context) : base(context)
         {
