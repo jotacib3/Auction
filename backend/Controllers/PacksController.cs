@@ -21,7 +21,7 @@ namespace backend.Controllers
         public PacksController(IRepositoryWrapper repoWrapper, IUnitOfWork unitOfWork)
         {
             _repoWrapper = repoWrapper;
-
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
@@ -59,6 +59,7 @@ namespace backend.Controllers
             }
 
             _repoWrapper.Pack.Create(pack);
+            _unitOfWork.SaveChangesAsync();
 
             return CreatedAtRoute("PackById", new { id = pack.Id }, pack);
         }

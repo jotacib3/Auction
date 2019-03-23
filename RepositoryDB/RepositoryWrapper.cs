@@ -23,10 +23,34 @@ namespace RepositoryDB
         private ITransmissionRepository _transmission;
         private IVersionRepository _version;
         private IYearRepository _year;
+        private IUserRepository _user;
+        private IRoleRepository _role;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
             _repoContext = repositoryContext;
+        }
+        public IUserRepository User
+        {
+            get
+            {
+                if (_user == null)
+                {
+                    _user = new UserRepository(_repoContext);
+                }
+                return _user;
+            }
+        }
+        public IRoleRepository Role
+        {
+            get
+            {
+                if (_role == null)
+                {
+                    _role = new RoleRepository(_repoContext);
+                }
+                return _role;
+            }
         }
         public IEmployeeRepository Employee {
             get

@@ -1,4 +1,4 @@
-﻿using Entities.Models;
+﻿ using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 //using System;
@@ -10,10 +10,6 @@ namespace Data
         public RepositoryContext(DbContextOptions<RepositoryContext> options)
             : base(options)
         {
-        }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-
         }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<City> Cities { get; set; }

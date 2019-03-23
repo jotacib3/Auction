@@ -21,9 +21,11 @@ namespace Entities.Models
         public string ZipCode { get; set; }
 
         public int StateId { get; set; }
+        public int PhotoId { get; set; }
         public int CityId { get; set; }
         public string UserId { get; set; }
 
+        public Photo Photo { get; set; }
         public State State { get; set; }
         public City City { get; set; }
         [JsonIgnore]

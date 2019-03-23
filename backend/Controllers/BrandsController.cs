@@ -93,11 +93,12 @@ namespace backend.Controllers
         {
             var brand = await _repoWrapper.Brand.GetById(id);
 
-            if (brand.IsEmptyObject())
+            if (brand.IsObjectNull())
             {
                 return NotFound();
             }
             _repoWrapper.Brand.Delete(brand);
+            await _unitOfWork.SaveChangesAsync();
 
             return NoContent();
         }

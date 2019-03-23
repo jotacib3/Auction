@@ -47,8 +47,10 @@ namespace backend.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config["sqlconnection:connectionString"];
-            services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString))
-                    .AddScoped<RepositoryContext>();
+            // services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString))
+            //    .AddScoped<RepositoryContext>();
+            services.AddDbContext<RepositoryContext>(options =>
+            options.UseInMemoryDatabase("CarDb"));
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

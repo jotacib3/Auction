@@ -20,5 +20,7 @@ namespace ContractsDB
         ITransmissionRepository Transmission { get; }
         IVersionRepository Version { get; }
         IYearRepository Year { get; }
+        IUserRepository User { get; }
+        IRoleRepository Role { get; }
     }
 }
