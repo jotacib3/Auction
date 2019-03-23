@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace backend.Extensions
+namespace backend.Helpers
 {
     public static class ServiceExtensions
     {

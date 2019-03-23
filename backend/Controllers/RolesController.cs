@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Helpers;
 using Contracts;
 using ContractsDB;
 using Microsoft.AspNetCore.Http;
@@ -35,10 +36,10 @@ namespace backend.Controllers
 
             var roles = new List<IdentityRole>
             {
-                new IdentityRole(){Id="1", Name = "EMPLOYEE"},
-                new IdentityRole(){Id="2", Name = "DISTRIBUTOR"},
-                new IdentityRole(){Id="3", Name = "ADMINGM"},
-                new IdentityRole(){Id="4", Name = "ADMINAMDGM"}
+                new IdentityRole(){Id="1", Name = Params.ROLE_EMPLOYEE},
+                new IdentityRole(){Id="2", Name = Params.ROLE_DISTRIBUTOR},
+                new IdentityRole(){Id="3", Name = Params.ROLE_ADMIN},
+                new IdentityRole(){Id="4", Name = Params.ROLE_ADMINAMDGM}
             };
             foreach (var rol in roles)
                 if(await _repoWrapper.Role.GetById(rol.Id) == null)
