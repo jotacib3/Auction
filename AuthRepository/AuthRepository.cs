@@ -116,5 +116,9 @@ namespace AuthRepo
 
             return result;
         }
+
+        public async Task<IEnumerable<User>> GetUsersInRole(string rol)
+            => await userManager.GetUsersInRoleAsync(rol);
+
     }
 }

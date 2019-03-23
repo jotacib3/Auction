@@ -36,10 +36,10 @@ namespace backend.Controllers
 
             var roles = new List<IdentityRole>
             {
-                new IdentityRole(){Id="1", Name = Params.ROLE_EMPLOYEE},
-                new IdentityRole(){Id="2", Name = Params.ROLE_DISTRIBUTOR},
-                new IdentityRole(){Id="3", Name = Params.ROLE_ADMIN},
-                new IdentityRole(){Id="4", Name = Params.ROLE_ADMINAMDGM}
+                new IdentityRole(){Id="1", Name = UserParams.ROLE_EMPLOYEE},
+                new IdentityRole(){Id="2", Name = UserParams.ROLE_DISTRIBUTOR},
+                new IdentityRole(){Id="3", Name = UserParams.ROLE_ADMIN},
+                new IdentityRole(){Id="4", Name = UserParams.ROLE_ADMINAMDGM}
             };
             foreach (var rol in roles)
                 if(await _repoWrapper.Role.GetById(rol.Id) == null)

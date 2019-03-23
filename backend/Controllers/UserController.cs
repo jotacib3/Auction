@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthRepo;
+using backend.Helpers;
 using Contracts;
 using ContractsDB;
+using Entities.Helpers;
 using Entities.Models;
+using Entities.ModelsView;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -27,38 +32,97 @@ namespace backend.Controllers
             _authRepository = authRepository;
         }
 
-        public IActionResult GetUsers(int page = 1, int size = 10, string roleName = null)
+        [HttpGet("inicializar")]
+        public async Task<IActionResult> Inicialzar()
         {
-            int skip = (page - 1) * size;
-            int total = 0;
-            IQueryable<User> query;
-
-            if (roleName != null)
+            var roles = new List<IdentityRole>
             {
-                var role = db.Roles.Where(r => r.Name.Equals(roleName)).First();
-                total = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).Count();
-                query = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id));
+                new IdentityRole(){Id="1", Name = UserParams.ROLE_EMPLOYEE},
+                new IdentityRole(){Id="2", Name = UserParams.ROLE_DISTRIBUTOR},
+                new IdentityRole(){Id="3", Name = UserParams.ROLE_ADMIN},
+                new IdentityRole(){Id="4", Name = UserParams.ROLE_ADMINAMDGM}
+            };
+            foreach (var rol in roles)
+                if (await _repoWrapper.Role.GetById(rol.Id) == null)
+                    _repoWrapper.Role.Create(rol);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            List<RegisterModel> models = new List<RegisterModel>()
+            {
+                new RegisterModel(){ Email= "Melisa@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Rosa@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "digna@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Jotica@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Oscar@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "harold@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Tiny@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+
+            };
+
+            foreach (var model in models)
+                await _authRepository.Register(model);
+
+            return Ok();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery] UserParams param)
+        {
+            IQueryable<User> query;
+            if (param.Role != null)
+            {
+                var role = await _repoWrapper.Role.FindByCondition(r=>r.Name.Equals(param.Role));
+                if (role != null)
+                    query = await _repoWrapper.User.FindAllInRole(role.Id);
+                else
+                    query = _repoWrapper.User.UsersQueryable(); 
             }
             else
             {
-                total = db.Users.Count();
-                query = db.Users;
+                query = _repoWrapper.User.UsersQueryable();
             }
 
-            var users = query
-                .OrderByDescending(c => c.Id)
-                .Skip(skip)
-                .Take(size)
-                .ToList();
+            var users = await PagedList<User>.CreateAsync(query.OrderByDescending(
+                      c => c.Id), param.PageNumber, param.PageSize);
 
-            return Ok(new PagedResult<User>(users, page, size, total));
+            Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
+            return Ok(users.ToList());           
         }
 
         // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(string id)
+        [HttpGet("{id}", Name = "UserById")]
+        public async Task<IActionResult> GetUser(string id)
         {
-            User user = db.Users.Find(id);
+            var user = await _repoWrapper.User.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -68,63 +132,31 @@ namespace backend.Controllers
         }
 
         // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(string id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            User user = db.Users.Find(id);
+            var user = await _repoWrapper.User.GetById(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            var vehicles = db.Vehicles.Where(v => v.User.Id.Equals(user.Id));
-            db.Vehicles.RemoveRange(vehicles);
+            var publications = await _repoWrapper.Publication.FindByCondition(v => v.User.Id.Equals(user.Id));
+            foreach (var publ in publications)
+                _repoWrapper.Publication.Delete(publ);
 
-            db.Users.Remove(user);
-            db.SaveChanges();
-
-            return Ok(user);
-        }
-
-        [Route("api/Users/AddRole")]
-        [ResponseType(typeof(User))]
-        public IHttpActionResult AddRole(string id, string roleName)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var roleresult = UserManager.AddToRole(user.Id, roleName);
-
-            db.SaveChanges();
+            _repoWrapper.User.Delete(user);
+            await _unitOfWork.SaveChangesAsync();
 
             return Ok(user);
         }
 
-        [Route("api/Users/RemoveRole")]
-        [ResponseType(typeof(User))]
-        public IHttpActionResult RemoveRole(string id, string roleName)
+        
+
+        [HttpPost("user/authorize/{id}")]
+        public async Task<IActionResult> AuthorizeUser(string id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var roleresult = UserManager.RemoveFromRole(user.Id, roleName);
-
-            db.SaveChanges();
-
-            return Ok(user);
-        }
-
-        [Route("api/Users/Authorize")]
-        [ResponseType(typeof(User))]
-        public IHttpActionResult AuthorizeUser(string id)
-        {
-            User user = db.Users.Find(id);
+            var user = await _repoWrapper.User.GetById(id);
 
             if (user == null)
             {
@@ -133,25 +165,23 @@ namespace backend.Controllers
 
             user.Enabled = true;
 
-            db.SaveChanges();
+            _repoWrapper.User.Update(user);
+            await _unitOfWork.SaveChangesAsync();
 
             return Ok(user);
         }
 
-        [Route("api/Users/Unauthorize")]
-        [ResponseType(typeof(User))]
-        public IHttpActionResult UnauthorizeUser(string id)
+        [HttpPost("users/unauthorize/{id}")]
+        public async Task<IActionResult> UnAuthorizeUser(string id)
         {
-            User user = db.Users.Find(id);
+            var user = await _repoWrapper.User.GetById(id);
 
             if (user == null)
             {
                 return NotFound();
             }
-
-            user.Enabled = false;
-
-            db.SaveChanges();
+            _repoWrapper.User.Update(user);
+            await _unitOfWork.SaveChangesAsync();
 
             return Ok(user);
         }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.Helpers
 {
-    public class Params
+    public class UserParams: PagedParams
     {
         //Roles Params
         public const string ROLE_EMPLOYEE = "EMPLOYEE";
@@ -13,14 +13,7 @@ namespace backend.Helpers
         public const string ROLE_ADMIN = "ADMINAMDGM";
         public const string ROLE_ADMINAMDGM = "ADMINAMDGM";
 
-        //PAgianton Params
-        public const int MaxPageSize = 50;
-        public int PageNumber { get; set; } = 1;
-        private int pageSize = 10;
-        public int PageSize
-        {
-            get { return pageSize; }
-            set { pageSize = (value > MaxPageSize) ? pageSize : value; }
-        }
+        //Filter
+        public string Role { get; set; }
     }
 }

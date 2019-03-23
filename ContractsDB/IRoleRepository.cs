@@ -12,6 +12,6 @@ namespace ContractsDB
         Task<IEnumerable<string>> FindAll();
         void Create(IdentityRole Entity);
         Task<IdentityRole> GetById(string Id);
-        Task<IEnumerable<IdentityRole>> FindByCondition(Expression<Func<IdentityRole, bool>> expression);
+        Task<IdentityRole> FindByCondition(Expression<Func<IdentityRole, bool>> expression);
     }
 }

@@ -34,9 +34,9 @@ namespace RepositoryDB
         {
             return await _context.Roles.FindAsync(Id);
         }
-        public async Task<IEnumerable<IdentityRole>> FindByCondition(Expression<Func<IdentityRole, bool>> expression)
+        public async Task<IdentityRole> FindByCondition(Expression<Func<IdentityRole, bool>> expression)
         {
-            return await this._context.Set<IdentityRole>().Where(expression).ToListAsync();
+            return await this._context.Set<IdentityRole>().Where(expression).FirstOrDefaultAsync();
         }
 
     }

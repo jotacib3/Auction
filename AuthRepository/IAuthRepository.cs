@@ -23,5 +23,6 @@ namespace AuthRepo
         Task<IList<string>> GetAllRoles(User user);
         Task<IdentityResult> AddRole(string id, string rolname);
         Task<IdentityResult> RemoveRole(string id, string rolname);
+        Task<IEnumerable<User>> GetUsersInRole(string rol);
     } 
 }

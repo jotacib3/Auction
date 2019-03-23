@@ -14,12 +14,13 @@ namespace Entities.Helpers
             public int TotalCount { get; set; }
             public int TotalPages { get; set; }
 
-        public PagedList(List<T> items, int pageNumber, int pageSize, int Count)
+        public PagedList(List<T> items, int Count, int pageNumber, int pageSize)
         {
             TotalCount = Count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
             TotalPages = (int)Math.Ceiling(Count / (double)pageSize);
+            this.AddRange(items);
         }
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)

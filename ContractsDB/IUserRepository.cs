@@ -12,6 +12,7 @@ namespace ContractsDB
     {
         IQueryable<User> UsersQueryable();
         Task<IEnumerable<User>> FindAll();
+        Task<IQueryable<User>> FindAllInRole(string role);
         Task<IEnumerable<User>> FindByCondition(Expression<Func<User, bool>> expression);
         Task<User> GetById(string Id);
         void Update(User Entity);
