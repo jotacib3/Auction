@@ -95,21 +95,26 @@ namespace AuthRepo
             return result;
         }
 
-        /* public async Task<bool> Registers(RegisterModel model)
-         {
-
-             /*foreach (var rol in model.Roles) 
-                 await roleManager.CreateAsync(new IdentityRole(rol));*/
-        /* var user = new User { UserName = model.Username, Email = model.Email , Avatar = model.Avatar};
-         var result = await userManager.CreateAsync(user, model.Password);
-         var temp = await userManager.AddToRolesAsync(user, model.Roles);
-         return result.Succeeded && temp.Succeeded;
-     } */
 
         public async Task<bool> UserExists(string Username)
         {
             return  await userManager.FindByNameAsync(Username) != null; 
         }
 
+        public async Task<IdentityResult> AddRole(string id, string rol)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            var result = await userManager.AddToRoleAsync(user, rol);
+
+            return result;
+        }
+
+        public async Task<IdentityResult> RemoveRole(string id, string rol)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            var result = await userManager.RemoveFromRoleAsync(user, rol);
+
+            return result;
+        }
     }
 }

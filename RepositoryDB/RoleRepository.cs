@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,7 +34,10 @@ namespace RepositoryDB
         {
             return await _context.Roles.FindAsync(Id);
         }
-
+        public async Task<IEnumerable<IdentityRole>> FindByCondition(Expression<Func<IdentityRole, bool>> expression)
+        {
+            return await this._context.Set<IdentityRole>().Where(expression).ToListAsync();
+        }
 
     }
 }

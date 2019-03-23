@@ -21,5 +21,7 @@ namespace AuthRepo
         void ForgotPassword(ForgotPasswordModel model, ClaimsPrincipal user);
         Task<bool> UserExists(string Username);
         Task<IList<string>> GetAllRoles(User user);
-    }
+        Task<IdentityResult> AddRole(string id, string rolname);
+        Task<IdentityResult> RemoveRole(string id, string rolname);
+    } 
 }

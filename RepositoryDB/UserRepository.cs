@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,11 +20,6 @@ namespace RepositoryDB
             _context = context;
         }
 
-        public void Create(User Entity)
-        {
-            _context.Users.Add(Entity);
-        }
-
         public void Delete(User Entity)
         {
             _context.Entry(Entity).State = EntityState.Deleted;
@@ -36,12 +32,21 @@ namespace RepositoryDB
 
         public async Task<User> GetById(string Id)
         {
-            return await _context.Users.Where(e => e.Id.Equals(Id)).FirstAsync();
+            return await _context.Users.FindAsync(Id);
         }
 
         public void Update(User Entity)
         {
             _context.Entry(Entity).State = EntityState.Modified;
+        }
+
+        public async Task<IEnumerable<User>> FindByCondition(Expression<Func<User, bool>> expression)
+        {
+            return await this._context.Set<User>().Where(expression).ToListAsync();
+        }
+        public IQueryable<User> UsersQueryable()
+        {
+             return _context.Users.AsQueryable();
         }
     }
 }
