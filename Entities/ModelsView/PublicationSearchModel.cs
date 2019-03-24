@@ -6,7 +6,7 @@ namespace Entities.ModelsView
 {
     public class PublicationSearchModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? InvoiceNumber { get; set; }
         public int? MinMileage { get; set; }
         public int? MaxMileage { get; set; }

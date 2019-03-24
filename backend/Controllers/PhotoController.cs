@@ -10,6 +10,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
@@ -20,6 +21,9 @@ namespace backend.Controllers
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHostingEnvironment _host;
+
+        private readonly int MAX_BYTES = 1 * 1024 * 1024;
+        private readonly string[] ACCEPTED_FILE_TYPES =new[] {".jpg","jpeg", ".png" };
         public PhotoController(IRepositoryWrapper repoWrapper, IUnitOfWork unitOfWork,
                                IHostingEnvironment host)
         {
@@ -51,35 +55,86 @@ namespace backend.Controllers
         }
 
         [HttpPost("publication/{id}")]
-        public async Task<IActionResult> CreatePhotosPublication(int id, [FromBody] List<IFormFile> files)
-        {
-            if (files == null)
-            {
-                return BadRequest("Photos objects is null");
-            }
-
+        public async Task<IActionResult> CreatePhotosPublication(int id, List<IFormFile> files)
+        { 
             if (files.Count != 5)
             {
                 return BadRequest("Is not 5 photos");
             }
+             
+            var publication = await _repoWrapper.Publication.Queryable()
+                                    .Include(a => a.Photos).Where(p => p.Id ==id).FirstOrDefaultAsync();
 
-            var publication = await _repoWrapper.Publication.GetById(id);
-
-            if (publication == null)
+            if (publication.Id != id)
                 return NotFound();
 
-            foreach(var file in files)
-                publication.Photos.Add(await Upload(file));
+            foreach (var file in files)
+            {
+                if (file == null)
+                {
+                    return BadRequest("Photos objects is null");
+                }
+                if (file.Length == 0)
+                {
+                    return BadRequest("Empty file");
+                }
+
+                if (file.Length > MAX_BYTES)
+                {
+                    return BadRequest("Max file size exceeded");
+                }
+                if (!ACCEPTED_FILE_TYPES.Any(s => s == Path.GetExtension(file.FileName)))
+                {
+                    return BadRequest("Invalid file type.");
+                }
+                var Photo = await Upload(file);
+                if (publication.Photos == null)
+                    publication.Photos.Add(Photo);
+            }
 
             await _unitOfWork.SaveChangesAsync();
 
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBrand([FromBody] Brand brand, int id)
+        [HttpPost("employee/{id}")]
+        public async Task<IActionResult> CreatePhotosEmployee(string id, IFormFile file)
         {
-            if (brand.IsObjectNull())
+            if (file == null)
+            {
+                return BadRequest("Photos objects is null");
+            }
+            if (file.Length == 0)
+            {
+                return BadRequest("Empty file");
+            }
+
+            if(file.Length > MAX_BYTES)
+            {
+                return BadRequest("Max file size exceeded");
+            }
+            if(!ACCEPTED_FILE_TYPES.Any(s => s == Path.GetExtension(file.FileName)))
+            {
+                return BadRequest("Invalid file type.");
+            }
+            
+
+            var employee = await _repoWrapper.Employee.FindQueryable(p => p.UserId.Equals(id)).FirstOrDefaultAsync();
+
+            if (!employee.UserId.Equals(id))
+                return NotFound();
+
+            var Photo = await Upload(file);
+            employee.Photo = Photo;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePhoto([FromBody] Photo photo, int id)
+        {
+            if (photo.IsObjectNull())
             {
                 return BadRequest("Brand object is null");
             }
@@ -89,12 +144,12 @@ namespace backend.Controllers
                 return BadRequest("Invalid object Model");
             }
 
-            if (brand.IsDifferentObject(id))
+            if (photo.IsDifferentObject(id))
             {
                 return NotFound();
             }
 
-            _repoWrapper.Brand.Update(brand);
+            _repoWrapper.Photo.Update(photo);
             await _unitOfWork.SaveChangesAsync();
 
             return NoContent();
@@ -102,15 +157,15 @@ namespace backend.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBrand(int id)
+        public async Task<IActionResult> DeletePhoto(int id)
         {
-            var brand = await _repoWrapper.Brand.GetById(id);
+            var photo= await _repoWrapper.Photo.GetById(id);
 
-            if (brand.IsObjectNull())
+            if (photo.IsObjectNull())
             {
                 return NotFound();
             }
-            _repoWrapper.Brand.Delete(brand);
+            _repoWrapper.Photo.Delete(photo);
             await _unitOfWork.SaveChangesAsync();
 
             return NoContent();

@@ -75,6 +75,7 @@ namespace backend.Controllers
             {
                 new Fuel(){Nombre = "Gasolina"},
                 new Fuel(){Nombre = "Petrole"},
+                new Fuel(){Nombre = "Diesel"},
                 new Fuel(){Nombre = "Arquimia"}
             };
             foreach (var fuel in fuels)
@@ -92,8 +93,9 @@ namespace backend.Controllers
 
             var models = new List<Model>()
             {
-                new Model(){Nombre = "Descaotable"},
+                new Model(){Nombre = "Descapotable"},
                 new Model(){Nombre = "Clasico"},
+                new Model(){Nombre = "Ferrari"},
                 new Model(){Nombre = "Carrera"}
             };
             foreach (var model in models)
@@ -102,6 +104,7 @@ namespace backend.Controllers
             var years = new List<Year>()
             {
                 new Year(){Nombre = "1958"},
+                new Year(){Nombre = "2017"},
                 new Year(){Nombre = "2018"},
                 new Year(){Nombre = "2019"}
             };
@@ -160,6 +163,7 @@ namespace backend.Controllers
                                     Password = "Jotica123@123",
                                     ConfirmPassword = "Jotica123@123",
                                     Role = "EMPLOYEE"
+                                    
                 },
                 new RegisterModel(){ Email= "digna@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
@@ -192,10 +196,29 @@ namespace backend.Controllers
             foreach (var model in models1)
                 await _authRepository.Register(model);
 
+           
             var userss = await _repoWrapper.User.FindAll();
             var userPrueba = userss.First();
+            var userPrueba1 = userss.Last();
             var ccc = await _repoWrapper.City.GetById(10);
             userPrueba.City = ccc;
+
+            _repoWrapper.Employee.Create(new EmployeeData()
+            {
+                CellNumber = "55824756",
+                CityId = 4,
+                FatherSurname = "Juan Jose",
+                Colony = "Diezmero",
+                InsideNumber = "12356",
+                MotherSurname = "Digna",
+                FixNumber = "9764",
+                NoEmployee = "1",
+                OutsideNumber = "654",
+                StateId = 1,
+                ZipCode = "Codigo Postal",
+                UserId = userPrueba.Id
+            });
+
             await _unitOfWork.SaveChangesAsync();
 
             var publications = new List<Publication>()
@@ -207,16 +230,96 @@ namespace backend.Controllers
                                   OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
                                   Mileage = 1000, Price = 250000, SerialNumber = "1234",
                                  VersionId = 1, YearId =2 },
+                new Publication(){BrandId = 3,Created = new System.DateTime(2015,3,7,9,23,4),
+                                  DoorsNumberId = 4, Enabled = false,EquipmentDetails="Este es un Mustang 2",
+                                  FuelId =2, InsideColor="azul", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 4, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 1,
+                                  Mileage = 9000, Price = 20000000, SerialNumber = "7834",
+                                 VersionId = 4, YearId = 3 },
+                new Publication(){BrandId = 2,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 4, LocationId = 3, ModelId = 4,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
                 new Publication(){BrandId = 1,Created = System.DateTime.Now,
                                   DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
                                   FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
                                   InvoiceNumber = 2, LocationId = 2, ModelId = 3,
                                   OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
                                   Mileage = 1000, Price = 250000, SerialNumber = "1234",
-                                 VersionId = 1, YearId =2 },
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 3, YearId =2 }
+                ,
+                new Publication(){BrandId = 2,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 4, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 2, YearId =4 }
+                ,
                 new Publication(){BrandId = 1,Created = System.DateTime.Now,
                                   DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
                                   FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+                ,
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba1.Id,
                                   InvoiceNumber = 2, LocationId = 2, ModelId = 3,
                                   OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
                                   Mileage = 1000, Price = 250000, SerialNumber = "1234",
@@ -225,6 +328,38 @@ namespace backend.Controllers
             };
             foreach (var publication in publications)
                 _repoWrapper.Publication.Create(publication);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var allpubl = await _repoWrapper.Publication.FindAll();
+            var publ1 = allpubl.First();
+            var publ2 = allpubl.Last();
+
+            System.DateTime fecha = new System.DateTime();
+
+            List<Offer> offers = new List<Offer>()
+            {
+                new Offer() { Id = 1, Price = 50000, Description = "Un carrito muy bonito",
+                    Created = fecha, PublicationId = 2, UserId = "10", Enabled = true, User = userPrueba,
+                    Publication = publ1 },
+
+                new Offer() { Id = 2, Price = 100000, Description = "Un bumbumchakata",
+                    Created = fecha, PublicationId = 3, UserId = "10", Enabled = false, User = userPrueba1,
+                    Publication = publ1 },
+
+                new Offer() { Id = 3, Price = 80000, Description = "Bruuuuuuuummmmm",
+                    Created = fecha, PublicationId = 4, UserId = "9", Enabled = true, User = userPrueba,
+                    Publication = publ2 },
+
+                new Offer() { Id = 4, Price = 1000000, Description = "Taxi libre",
+                    Created = fecha, PublicationId = 1, UserId = "9", Enabled = true, User = userPrueba1,
+                    Publication = publ2 }
+            };
+
+            foreach (var offer in offers)
+            {
+                _repoWrapper.Offer.Create(offer);
+            }
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

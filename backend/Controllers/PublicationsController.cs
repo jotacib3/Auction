@@ -31,7 +31,10 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<ActionResult> GetPublications([FromQuery]PagedParams param)
         {
-            var queryable = _repoWrapper.Publication.Queryable().Include(p => p.Photos);
+            var queryable = _repoWrapper.Publication.Queryable()
+                                        .Include(p => p.Photos);
+            
+                                  
             var publications = await PagedList<Publication>.CreateAsync(queryable.OrderByDescending(
                       c => c.Id), param.PageNumber, param.PageSize);
 
@@ -42,7 +45,7 @@ namespace backend.Controllers
         }
 
         // POST: api/Vehicles/Filter
-        [HttpGet("Filter")]
+        [HttpPost("Filter")]
         public async Task<IActionResult> FilterPublications(PublicationSearchModel filters, [FromQuery]PagedParams param)
         {
             var queryable = SearchPublication(filters);
