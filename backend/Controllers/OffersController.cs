@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Helpers;
 using Contracts;
 using ContractsDB;
 using Entities.Extensions;
+using Entities.Helpers;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +26,25 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOffers()
+        public async Task<IActionResult> GetAllOffers([FromQuery]PagedParams param, [FromQuery]string Id )
         {
-            var offers = await _repoWrapper.Offer.FindAll();
-            return Ok(offers);
+            IQueryable<Offer> queryable = _repoWrapper.Offer.Queryable();
+
+            if (User.IsInRole(UserParams.ROLE_EMPLOYEE))
+            {
+                queryable.Where(u => u.Publication.UserId.Equals(Id));
+            }
+            else if (User.IsInRole(UserParams.ROLE_DISTRIBUTOR))
+            {
+                queryable.Where(d => d.UserId.Equals(Id));
+            }
+            var offers = await PagedList<Offer>.CreateAsync(queryable.OrderByDescending(
+                      c => c.Id), param.PageNumber, param.PageSize);
+
+            Response.AddPagination(offers.CurrentPage, offers.PageSize,
+                                   offers.TotalCount, offers.TotalPages);
+
+            return Ok(offers.ToList());
         }
 
         [HttpGet("{id}", Name = "OfferById")]

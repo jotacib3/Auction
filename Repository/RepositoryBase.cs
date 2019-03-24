@@ -27,14 +27,14 @@ namespace Repository
             return await this._context.Set<T>().ToListAsync();
         }
         
-        public async Task<IEnumerable<T>> FindByCondition(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
         {
             return await this._context.Set<T>().Where(expression).ToListAsync();
         }
 
         public async Task<T> GetById(int Id)
         {
-            var entity =await FindByCondition(e => e.Id.Equals(Id));
+            var entity =await FindByConditionAsync(e => e.Id.Equals(Id));
             return entity.DefaultIfEmpty(new T()).FirstOrDefault();
         }
 
@@ -53,6 +53,9 @@ namespace Repository
             this._context.Set<T>().Remove(Entity);
         }
 
-
+        public IQueryable<T> FindQueryable(Expression<Func<T, bool>> expression)
+        {
+            return this._context.Set<T>().Where(expression);
+        }
     }
 }

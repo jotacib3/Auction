@@ -91,6 +91,13 @@ namespace backend.Controllers
             foreach (var model in models)
                 await _authRepository.Register(model);
 
+            var userss = await _repoWrapper.User.FindAll();
+            var userPrueba = userss.First();
+
+            List<Offer> ofertas = new List<Offer>()
+            {
+                new Offer(){}
+            };
             return Ok();
         }
         [HttpGet]
@@ -141,7 +148,7 @@ namespace backend.Controllers
                 return NotFound();
             }
 
-            var publications = await _repoWrapper.Publication.FindByCondition(v => v.User.Id.Equals(user.Id));
+            var publications = await _repoWrapper.Publication.FindByConditionAsync(v => v.User.Id.Equals(user.Id));
             foreach (var publ in publications)
                 _repoWrapper.Publication.Delete(publ);
 

@@ -10,8 +10,9 @@ namespace Contracts
     public interface IRepositoryBase<T> where T : IEntity
     {
         IQueryable<T> Queryable();
+        IQueryable<T> FindQueryable(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> FindAll();
-        Task<IEnumerable<T>> FindByCondition(Expression<Func<T, bool>> expression);
+        Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression);
         Task<T> GetById(int Id);
         void Create(T Entity);
         void Update(T Entity);

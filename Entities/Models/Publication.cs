@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -29,22 +30,6 @@ namespace Entities.Models
         public int YearId { get; set; }
         public int DoorsNumberId { get; set; }
 
-        [ForeignKey("FrontImage")]
-        public int FrontImageId{ get; set; }
-
-        [ForeignKey("RightImage")]
-        public int RightImageId { get; set; }
-
-        [ForeignKey("LeftImage")]
-        public int LeftImageId { get; set; }
-
-        [ForeignKey("BackImage")]
-        public int BackImageId { get; set; }
-
-        [ForeignKey("InsideImage")]
-        public int InsideImageId { get; set; }
-
-
         public string UserId { get; set; }
 
         public Brand Brand { get; set; }
@@ -56,15 +41,8 @@ namespace Entities.Models
         public Version Version { get; set; }
         public Year Year { get; set; }
         public DoorsNumber DoorsNumber { get; set; }
-
-        public Photo FrontImage { get; set; }
-        public Photo RightImage { get; set; }
-        public Photo LeftImage { get; set; }
-        public Photo BackImage { get; set; }
-        public Photo InsideImage { get; set; }
-
+        public List<Photo> Photos { get; set; }
         public User User { get; set; }
-
         public List<Offer> Offer { get; set; }
     }
 }

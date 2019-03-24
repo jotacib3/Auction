@@ -25,6 +25,7 @@ namespace RepositoryDB
         private IYearRepository _year;
         private IUserRepository _user;
         private IRoleRepository _role;
+        private IPhotoRepository _photo;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
@@ -60,6 +61,17 @@ namespace RepositoryDB
                     _employee = new EmployeeDataRepository(_repoContext);
                 }
                 return _employee;
+            }
+        }
+        public IPhotoRepository Photo
+        {
+            get
+            {
+                if (_photo == null)
+                {
+                    _photo = new PhotoRepository(_repoContext);
+                }
+                return _photo;
             }
         }
         public IBrandRepository Brand {

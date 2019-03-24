@@ -22,5 +22,6 @@ namespace ContractsDB
         IYearRepository Year { get; }
         IUserRepository User { get; }
         IRoleRepository Role { get; }
+        IPhotoRepository Photo { get; }
     }
 }

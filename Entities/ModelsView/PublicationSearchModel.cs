@@ -6,7 +6,7 @@ namespace Entities.ModelsView
 {
     public class PublicationSearchModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public int? InvoiceNumber { get; set; }
         public int? MinMileage { get; set; }
         public int? MaxMileage { get; set; }
@@ -16,15 +16,15 @@ namespace Entities.ModelsView
         public double? MinPrice { get; set; }
         public double? MaxPrice { get; set; }
 
-        public string BrandId { get; set; }
-        public string ModelId { get; set; }
-        public string FuelId { get; set; }
-        public string LocationId { get; set; }
-        public string PackId { get; set; }
-        public string TransmissionId { get; set; }
-        public string VersionId { get; set; }
-        public string YearId { get; set; }
-        public string DoorsNumberId { get; set; }
+        public int? BrandId { get; set; }
+        public int? ModelId { get; set; }
+        public int? FuelId { get; set; }
+        public int? LocationId { get; set; }
+        public int? PackId { get; set; }
+        public int? TransmissionId { get; set; }
+        public int? VersionId { get; set; }
+        public int? YearId { get; set; }
+        public int? DoorsNumberId { get; set; }
 
         public string UserId { get; set; }
 
