@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using Entities.ModelsView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
@@ -35,6 +35,108 @@ namespace backend.Controllers
         [HttpGet("inicializar")]
         public async Task<IActionResult> Inicialzar()
         {
+            var cities = new List<City>()
+            {
+                new City(){Nombre = "HonKong"},
+                new City(){Nombre = "Havana"},
+                new City(){Nombre = "SantaClara"},
+                new City(){Nombre = "NewYork"},
+                new City(){Nombre = "Paris"},
+                new City(){Nombre = "Castelvania"},
+                new City(){Nombre = "Konoha"},
+                new City(){Nombre = "Caracas"},
+                new City(){Nombre = "Berlin"},
+                new City(){Nombre = "Moscu"}
+            };
+            foreach (var city in cities)
+                _repoWrapper.City.Create(city);
+
+            var brands = new List<Brand>()
+            {
+                new Brand(){Nombre = "Ford"},
+                new Brand(){Nombre = "RoyRoy"},
+                new Brand(){Nombre = "Nissan"},
+                new Brand(){Nombre = "Cherolet"}
+            };
+            foreach (var brand in brands)
+                _repoWrapper.Brand.Create(brand);
+
+            var doors = new List<DoorsNumber>()
+            {
+                new DoorsNumber(){Nombre = "2"},
+                new DoorsNumber(){Nombre = "4"},
+                new DoorsNumber(){Nombre = "6"},
+                new DoorsNumber(){Nombre = "8"}
+            };
+            foreach (var door in doors)
+                _repoWrapper.DoorsNumber.Create(door);
+
+            var fuels = new List<Fuel>()
+            {
+                new Fuel(){Nombre = "Gasolina"},
+                new Fuel(){Nombre = "Petrole"},
+                new Fuel(){Nombre = "Arquimia"}
+            };
+            foreach (var fuel in fuels)
+                _repoWrapper.Fuel.Create(fuel);
+
+            var locationss = new List<Location>()
+            {
+                new Location(){Nombre = "Estados Unidos"},
+                new Location(){Nombre = "Caribe"},
+                new Location(){Nombre = "Dinamarca"},
+                new Location(){Nombre = "Asia"}
+            };
+            foreach (var location in locationss)
+                _repoWrapper.Location.Create(location);
+
+            var models = new List<Model>()
+            {
+                new Model(){Nombre = "Descaotable"},
+                new Model(){Nombre = "Clasico"},
+                new Model(){Nombre = "Carrera"}
+            };
+            foreach (var model in models)
+                _repoWrapper.Model.Create(model);
+
+            var years = new List<Year>()
+            {
+                new Year(){Nombre = "1958"},
+                new Year(){Nombre = "2018"},
+                new Year(){Nombre = "2019"}
+            };
+            foreach (var model in models)
+                _repoWrapper.Model.Create(model);
+            var packs = new List<Pack>()
+            {
+                new Pack(){Nombre = "No Se"},
+                new Pack(){Nombre = "No Se 1"},
+                new Pack(){Nombre = "No Se 2"},
+                new Pack(){Nombre = "No Se 3"}
+            };
+            foreach (var pack in packs)
+                _repoWrapper.Pack.Create(pack);
+
+            var states = new List<State>()
+            {
+                new State(){Nombre = "State1"},
+                new State(){Nombre = "State2"},
+                new State(){Nombre = "State3"},
+                new State(){Nombre = "State4"}
+            };
+            foreach (var state in states)
+                _repoWrapper.State.Create(state);
+
+            var versions = new List<Version>()
+            {
+                new Version(){Nombre = "version1"},
+                new Version(){Nombre = "version16"},
+                new Version(){Nombre = "version17"},
+                new Version(){Nombre = "version18"}
+            };
+            foreach (var version in versions)
+                _repoWrapper.Version.Create(version);
+
             var roles = new List<IdentityRole>
             {
                 new IdentityRole(){Id="1", Name = UserParams.ROLE_EMPLOYEE},
@@ -43,12 +145,11 @@ namespace backend.Controllers
                 new IdentityRole(){Id="4", Name = UserParams.ROLE_ADMINAMDGM}
             };
             foreach (var rol in roles)
-                if (await _repoWrapper.Role.GetById(rol.Id) == null)
                     _repoWrapper.Role.Create(rol);
 
             await _unitOfWork.SaveChangesAsync();
 
-            List<RegisterModel> models = new List<RegisterModel>()
+            List<RegisterModel> models1 = new List<RegisterModel>()
             {
                 new RegisterModel(){ Email= "Melisa@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
@@ -88,16 +189,44 @@ namespace backend.Controllers
 
             };
 
-            foreach (var model in models)
+            foreach (var model in models1)
                 await _authRepository.Register(model);
 
             var userss = await _repoWrapper.User.FindAll();
             var userPrueba = userss.First();
+            var ccc = await _repoWrapper.City.GetById(10);
+            userPrueba.City = ccc;
+            await _unitOfWork.SaveChangesAsync();
 
-            List<Offer> ofertas = new List<Offer>()
+            var publications = new List<Publication>()
             {
-                new Offer(){}
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 },
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 },
+                new Publication(){BrandId = 1,Created = System.DateTime.Now,
+                                  DoorsNumberId = 3, Enabled = true,EquipmentDetails="Tiene de Todo",
+                                  FuelId =1, InsideColor="negor", UserId = userPrueba.Id,
+                                  InvoiceNumber = 2, LocationId = 2, ModelId = 3,
+                                  OutsideColor ="rojo", PackId = 2, TransmissionId = 2,
+                                  Mileage = 1000, Price = 250000, SerialNumber = "1234",
+                                 VersionId = 1, YearId =2 }
+
             };
+            foreach (var publication in publications)
+                _repoWrapper.Publication.Create(publication);
+
+            await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
         [HttpGet]
@@ -114,7 +243,7 @@ namespace backend.Controllers
             }
             else
             {
-                query = _repoWrapper.User.UsersQueryable();
+                query = _repoWrapper.User.UsersQueryable().Include(c => c.City);
             }
 
             var users = await PagedList<User>.CreateAsync(query.OrderByDescending(
