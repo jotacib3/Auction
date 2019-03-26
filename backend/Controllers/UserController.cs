@@ -139,7 +139,7 @@ namespace backend.Controllers
             };
             foreach (var version in versions)
                 _repoWrapper.Version.Create(version);
-
+            await _unitOfWork.SaveChangesAsync();
             var roles = new List<IdentityRole>
             {
                 new IdentityRole(){Id="1", Name = UserParams.ROLE_EMPLOYEE},
@@ -147,11 +147,12 @@ namespace backend.Controllers
                 new IdentityRole(){Id="3", Name = UserParams.ROLE_ADMIN},
                 new IdentityRole(){Id="4", Name = UserParams.ROLE_ADMINAMDGM}
             };
+
             foreach (var rol in roles)
-                    _repoWrapper.Role.Create(rol);
-
-            await _unitOfWork.SaveChangesAsync();
-
+                await _authRepository.AddRole(rol);
+                   // _repoWrapper.Role.Create(rol);
+            //await _unitOfWork.SaveChangesAsync();
+            
             List<RegisterModel> models1 = new List<RegisterModel>()
             {
                 new RegisterModel(){ Email= "Melisa@estudiantes.matcom.uh.cu",
@@ -162,13 +163,13 @@ namespace backend.Controllers
                 new RegisterModel(){ Email= "Rosa@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
                                     ConfirmPassword = "Jotica123@123",
-                                    Role = "EMPLOYEE"
-                                    
+                                    Role = "DISTRIBUTOR"
+
                 },
                 new RegisterModel(){ Email= "digna@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
                                     ConfirmPassword = "Jotica123@123",
-                                    Role = "EMPLOYEE"
+                                    Role = "DISTRIBUTOR"
                 },
                 new RegisterModel(){ Email= "Jotica@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
@@ -183,13 +184,43 @@ namespace backend.Controllers
                 new RegisterModel(){ Email= "harold@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
                                     ConfirmPassword = "Jotica123@123",
-                                    Role = "EMPLOYEE"
+                                    Role = "DISTRIBUTOR"
                 },
                 new RegisterModel(){ Email= "Tiny@estudiantes.matcom.uh.cu",
                                     Password = "Jotica123@123",
                                     ConfirmPassword = "Jotica123@123",
                                     Role = "EMPLOYEE"
                 },
+                new RegisterModel(){ Email= "Bencomo@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Edel@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Bencomo@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "DISTRIBUTOR"
+                },
+                new RegisterModel(){ Email= "Alejandroo@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                },
+                new RegisterModel(){ Email= "Sheila@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "DISTRIBUTOR"
+                },
+                new RegisterModel(){ Email= "Andre@estudiantes.matcom.uh.cu",
+                                    Password = "Jotica123@123",
+                                    ConfirmPassword = "Jotica123@123",
+                                    Role = "EMPLOYEE"
+                }
 
             };
 
@@ -372,7 +403,12 @@ namespace backend.Controllers
             {
                 var role = await _repoWrapper.Role.FindByCondition(r=>r.Name.Equals(param.Role));
                 if (role != null)
+                {
+                    var user = await _authRepository.GetUsersInRole(param.Role);
                     query = await _repoWrapper.User.FindAllInRole(role.Id);
+                    query = _repoWrapper.User.UsersQueryable().Include(e => e.EmployeeData);
+                }
+              
                 else
                     query = _repoWrapper.User.UsersQueryable(); 
             }

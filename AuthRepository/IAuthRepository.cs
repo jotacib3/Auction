@@ -15,6 +15,7 @@ namespace AuthRepo
         Task<IdentityResult> Register(RegisterModel model);
         Task<IdentityResult> RegisterEmployee(RegisterEmployeeModel model);
         Task<User> Login(LoginModel model);
+        Task<IdentityResult> AddRole(IdentityRole role);
         Task<IdentityResult> ChangePassword(ChangePasswordModel model, ClaimsPrincipal user);
         Task<IdentityResult> SetPassword(SetPasswordModel model, ClaimsPrincipal user);
         Task<IdentityResult> ResetPassword(ResetPasswordModel model, ClaimsPrincipal user);

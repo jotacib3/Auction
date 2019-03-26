@@ -21,7 +21,10 @@ namespace AuthRepo
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
-
+        public async Task<IdentityResult> AddRole(IdentityRole role)
+        {
+            return await roleManager.CreateAsync(role);
+        }
         public async Task<IList<string>> GetAllRoles(User user)
         {
             return await userManager.GetRolesAsync(user);
@@ -29,7 +32,7 @@ namespace AuthRepo
 
         public async Task<User> Login(LoginModel model)
         {
-            var userToVerify = await userManager.FindByNameAsync(model.UserName);
+            var userToVerify = await userManager.FindByEmailAsync(model.Email);
             if (userToVerify == null)
                 return null;
             if (!await userManager.CheckPasswordAsync(userToVerify, model.Password))
@@ -45,9 +48,10 @@ namespace AuthRepo
 
             var result = await userManager.CreateAsync(user, model.Password);
 
-            if (model.Role != null)
+            var userDb = await userManager.FindByEmailAsync(model.Email);
+            if (model.Role != null && result.Succeeded)
             {
-                var roleresult = userManager.AddToRoleAsync(user, model.Role);
+                var roleresult = await userManager.AddToRoleAsync(userDb, model.Role);
             }
             
             return result;
@@ -55,11 +59,16 @@ namespace AuthRepo
 
         public async Task<IdentityResult> RegisterEmployee(RegisterEmployeeModel model)
         {
-            var user = new User() { UserName = model.Email,
+            var user = new User() { UserName = model.UserName,
                                    Email = model.Email, Enabled = null, EmployeeData = model.Employee };
 
             var result = await userManager.CreateAsync(user, model.Password);
-            var roleresult = userManager.AddToRoleAsync(user, model.Role);
+
+            var userDb = await userManager.FindByEmailAsync(model.Email);
+            if (model.Role != null && result.Succeeded)
+            {
+                var roleresult = await userManager.AddToRoleAsync(userDb, model.Role);
+            }
             return result;
         }
 

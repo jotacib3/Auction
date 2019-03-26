@@ -72,8 +72,8 @@ namespace backend.Helpers
                        ValidateLifetime = true,
                        ValidateIssuerSigningKey = true,
 
-                       ValidIssuer = "https://localhost:44322",
-                       ValidAudience = "https://localhost:44322",
+                       ValidIssuer = "http://localhost:1316",
+                       ValidAudience = "http://localhost:1316",
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Llave_secreta"]))
                    };
                });

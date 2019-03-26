@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,11 @@ namespace backend
             services.ConfigureAuthRepository();
             services.ConfigureUnitOfWork();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.ConfigureSwagger();
+            services.AddSpaStaticFiles(c =>
+            {
+                c.RootPath = "../../frontend/dist";
+            });
+            //services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,16 +70,35 @@ namespace backend
                     });
                 });
             }
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
 
             app.UseAuthentication();
             app.UseCors("EnableCORS");
-            
-            app.UseMvc();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(config =>
-                config.SwaggerEndpoint("/swagger/api/swagger.json", "Proyect Api"));
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(name: "default", template: "{controller}/{action=index}/{id}");
+            });
+
+            app.UseSpa(spa =>
+            {
+
+                spa.Options.SourcePath = "../../frontend";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
+            // app.UseMvc();
+
+            //app.UseSwagger();
+            //app.UseSwaggerUI(config =>
+            //    config.SwaggerEndpoint("/swagger/api/swagger.json", "Proyect Api"));
         }
     }
 }

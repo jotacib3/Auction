@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entities.ModelsView
 {
-    public class RegisterEmployeeModel: RegisterModel
+    public class RegisterEmployeeModel : RegisterModel
     {
+        public string UserName { get; set; }
         [Required]
         [Display(Name = "Employee data")]
         public EmployeeData Employee { get; set; }

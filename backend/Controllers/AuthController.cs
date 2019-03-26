@@ -160,7 +160,7 @@ namespace backend.Controllers
                issuer: "http://localhost:19365",
                audience: "http://localhost:19365",
                claims: claims,
-               expires: DateTime.Now.AddMinutes(5),
+               expires: DateTime.Now.AddDays(1),
                signingCredentials: signinCredentials
            );
 
