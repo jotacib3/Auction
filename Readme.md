@@ -1,2 +1,1 @@
-This is the .Net Core with Angular example.
-Data Base Project
+This is the .Net Core with Angular project.
