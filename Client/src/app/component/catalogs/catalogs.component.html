@@ -1,0 +1,20 @@
+<nz-layout >
+    <nz-sider [nzWidth]="200">
+            <ul nz-menu [nzMode]="'inline'" [nzTheme]="'dark'">
+                    <li nz-menu-item [routerLink]="['city-list']"><i nz-icon type="bank"></i> Ciudades</li>
+                    <li nz-menu-item [routerLink]="['state-list']"><i nz-icon type="reconciliation"></i> Estados</li>
+                    <li nz-menu-item [routerLink]="['brand-list']"><i nz-icon type="block"></i> Marcas</li>
+                    <li nz-menu-item [routerLink]="['model-list']"><i nz-icon type="border"></i> Modelos</li>
+                    <!-- <li nz-menu-item [routerLink]="['doors-number-list']"><i nz-icon type="appstore"></i> Doors Number</li> -->
+                    <li nz-menu-item [routerLink]="['fuel-list']"><i nz-icon type="fire" ></i> Tipos de Combustible</li>
+                    <li nz-menu-item [routerLink]="['location-list']"><i nz-icon type="environment"></i> Ubicaciones</li>
+                    <!-- <li nz-menu-item [routerLink]="['pack-list']"><i nz-icon type="tool"></i> Pack</li> -->
+                    <li nz-menu-item [routerLink]="['transmission-list']"><i nz-icon type="database"></i> Tipos de Transmisión</li>
+                    <li nz-menu-item [routerLink]="['version-list']"><i nz-icon type="dashboard"></i> Versiones</li>
+                    <!-- <li nz-menu-item [routerLink]="['year-list']"><i nz-icon type="hourglass" [nzTheme]="'twotone'"></i> year</li> -->
+                </ul>
+       </nz-sider>
+    <nz-content>
+           <router-outlet></router-outlet>
+    </nz-content>
+</nz-layout>

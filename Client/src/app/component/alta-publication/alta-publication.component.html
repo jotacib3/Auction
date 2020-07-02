@@ -1,0 +1,38 @@
+<h1></h1>
+
+<div class="container" style="height: 65n0px" >
+  <div class="col-md-12">
+    <div class="table-responsive">
+        <nz-table #nestedTable [nzData] = "publications" [nzPageSize]="10" nzBordered="true" nzTitle="Alta-Publications" nzSize="middle">
+            <thead>
+              <tr>
+                <th nzAlign="center">Número de empleado</th>
+                <th nzAlign="center">Nombre empleado</th>
+                <th nzAlign="center">Número de serie</th>
+                <th nzAlign="center">Número de factura</th>
+                <th nzAlign="center">Tiempo de publicación</th>
+                <th nzAlign="center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-publ [ngForOf]="nestedTable.data">
+                <tr>
+                  <td nzAlign="center">{{publ.user?.employeeData?.noEmployee}}</td>
+                  <td nzAlign="center">{{publ.user?.employeeData?.name + " " + publ.user?.employeeData?.fatherSurname +" " +publ.user?.employeeData?.motherSurname}}</td> 
+                  <td nzAlign="center">{{publ.serialNumber}}</td>
+                  <td nzAlign="center">{{publ.invoiceNumber}}</td>
+                  <td nzAlign="center">
+                    <nz-input-number [(ngModel)]="demoValue" [nzMin]="1" [nzMax]="15" [nzStep]="1"></nz-input-number>
+                  </td>
+                  <td nzAlign="center">
+                    <button [disabled]="(publ.enabled !== null )"  nzSize="small" nz-button nzType="primary" (click)="Authorize(publ.id)">Autorizar</button>
+                    <button [disabled]="!(publ.enabled !== false)" nzSize="small" nz-button nzType="danger" (click)="Unauthorize(publ.id)">Desautorizar</button>
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+              

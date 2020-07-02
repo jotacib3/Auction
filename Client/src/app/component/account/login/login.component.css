@@ -1,0 +1,28 @@
+.abs-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+ 
+.form {
+  width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+i {
+  cursor: pointer;
+}
+
+
+nz-avatar {
+  margin-top: 16px;
+  margin-right: 16px;
+}

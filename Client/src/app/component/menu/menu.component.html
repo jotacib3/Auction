@@ -1,0 +1,62 @@
+<ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'" style="line-height: 64px">
+    <li *ngIf="employeeEnabled" nz-menu-item [routerLink]="['employee/publication-list']"><i nz-icon type="car" [nzTheme]="'twotone'" [nzTwotoneColor]="'#fffb01'"></i> Vehículos</li>
+    <!-- <li *ngIf="employeeEnabled" nz-menu-item [routerLink]="['employee/offer-list']"><i nz-icon type="notification" style="color: rgb(247, 120, 2);"></i>Notificaciones</li> -->
+    <li *ngIf="distributorEnabled" nz-menu-item [routerLink]="['distributor/publication-search']"><i nz-icon type="shopping-cart" style="color: rgb(228, 165, 107);"></i> Buscar Vehículos</li>
+    <li *ngIf="admingmEnabled" nz-menu-item [routerLink]="['admin-gm/publications']"><i nz-icon type="team" style="color: rgba(22, 209, 223, 0.932);"></i> Publicaciones</li>
+    <li *ngIf="admingmEnabled" nz-menu-item [routerLink]="['admin-gm/alta-employee']"><i nz-icon type="team" style="color: rgba(30, 16, 230, 0.932);"></i> Empleados</li>
+    <li *ngIf="distributorEnabled" nz-menu-item [routerLink]="['distributor/offer-list']"><i nz-icon type="solution" style="color: rgba(7, 255, 7, 0.932);"></i> Ofertas</li>
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/catalog-list']"><i nz-icon type="global" style="color: rgba(173, 230, 16, 0.932);"></i> Catálogos</li>
+    <li *ngIf="employeeEnabled" nz-menu-item [routerLink]="['employee/vehicle-list']"><i nz-icon type="audit" style="color: rgba(230, 16, 16, 0.932);"></i> Publicaciones</li>
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/user-employee']"><i nz-icon type="user" style="color: rgba(83, 18, 204, 0.932);"></i> Empleados</li>
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/user-distributor']"><i nz-icon type="user" style="color: rgba(83, 18, 204, 0.932);"></i> Distribuidores</li>
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/register-distributor']"><i nz-icon type="user-add" style="color: rgba(83, 18, 204, 0.932);"></i> Registrar Distribuidor</li>    
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/bar_graphic']"><i nz-icon type="bar-chart" style="color: rgba(7, 255, 7, 0.932);"></i> Gráfica1</li>
+    <li *ngIf="adminamdgmEnabled" nz-menu-item [routerLink]="['admin-amdgm/pie_graphic']"><i nz-icon type="pie-chart" style="color:  rgb(247, 120, 2);"></i> Gráfica2</li>    
+
+<ul style="line-height: 64px;text-align: right;float:right">
+    <li nz-submenu>
+      <span title><i nz-icon type="user" style="color: rgba(16, 230, 177, 0.932);"></i>{{email}}</span>
+      <ul>
+        <li *ngIf="employeeEnabled" (click)="showModal()" nz-menu-item>Editar</li>
+        <li (click)="changePassword()" nz-menu-item>Cambiar contraseña</li>
+        <li (click)="logout()" nz-menu-item>Salir</li>   
+      </ul>
+    </li>
+  </ul>
+</ul>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Editar Empleado" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixUser">
+              <input type="text" nz-input formControlName="userName" placeholder="Nombre" />
+            </nz-input-group>
+            <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors">
+              Por favor, escriba un nombre!
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input type="text" nz-input formControlName="password" placeholder="Número de Teléfono" />
+            </nz-input-group>
+            <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">
+              Por favor, escriba un número de teléfono!
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+    </form>
+      <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
+      <ng-template #prefixLock><i nz-icon type="phone"></i></ng-template>
+    
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" 
+          [disabled]="((validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors) ||
+                      (validateForm.get('password')?.dirty && validateForm.get('password')?.errors)) ||
+                      (validateForm.get('userName')?.pristine && validateForm.get('password')?.pristine)"
+          (click)="handleOk()">OK</button>
+        <button nz-button nzType="danger"  (click)="handleCancel()">Cancel</button>
+    </ng-template>
+</nz-modal>

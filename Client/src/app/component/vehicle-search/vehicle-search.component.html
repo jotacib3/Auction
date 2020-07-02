@@ -1,0 +1,61 @@
+<div class="row mt-4 pt-4">
+  <div id="vehicle-search-title" class="col-12">
+      <p class="page-title-2" style="padding-top: 230px;">
+          ENCUENTRA TU AUTO
+      </p>
+  </div>
+</div>
+
+<div class="row mb-2 pb-2" style="padding-right: 0;padding-left: 0;">
+  <div class="col-12">
+      <app-vehicle-filters (filtersChange)="onFiltersChange($event)"></app-vehicle-filters>
+  </div>
+</div>
+<nz-empty *ngIf="!(vehicles && vehicles.length)" ></nz-empty>
+<div class="row pl-3 pr-3">
+  <div *ngFor="let vehicle of vehicles" class="col-sm-3 oel">
+      <div class="card oel">
+          <div>
+              <img style="height: 250px;width: 500px;object-fit: cover;object-position: center"
+               src="{{this.repo.getPhoto(vehicle.photos[0]?.fileName)}}"
+                  class="img-fluid">
+              <a>
+                  <div class="mask"></div>
+              </a>
+          </div>
+          <div class="card-body pt-0">
+            <p class="card-title detail colr"><strong>${{vehicle.price}}</strong></p>
+            <p class="colr mt-0 pb-0" style="font-size: 18px">{{vehicle.location.nombre}}</p>
+            <p class="colr mb-4 mt-0 pt-0" style="font-size: 18px">{{vehicle.mileage}}Km | {{vehicle.year.nombre}}</p>
+              <h3>{{ vehicle.brand?.nombre }} {{ vehicle.model?.nombre}}</h3>
+
+              <button (click)="addOffer(vehicle)" class="btn btn-block btn-primary">OFERTAR</button>
+          </div>
+      </div>
+  </div>
+
+<div class="container mt-4">
+<div nz-row nzType="flex" nzJustify="center" nzAlign="middle">
+  <div nz-col *ngIf="vehicles && vehicles.length"  >
+    <nz-pagination
+      [nzPageIndex]="pagination.currentPage" 
+      [nzPageSize]="pagination.itemPerPage"
+      [nzTotal]="pagination.totalItems"
+      nzSize="small"
+      (nzPageIndexChange)="CurrentPageIndexChange($event)">
+    </nz-pagination>
+  </div>
+</div>
+</div>
+  <div class="clearfix"></div>
+
+  <div class="col-12">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+  </div>
+</div>
+
+<app-offer-form [vehicle]="vehicle" [modal]="modal" (newOffer)="onNewOfferEvent()"></app-offer-form>

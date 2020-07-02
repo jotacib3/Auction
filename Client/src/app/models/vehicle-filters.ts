@@ -1,0 +1,20 @@
+export class VehicleFilters {
+    brandId: number = null;
+    modelId: number = null;
+    versionId: number = null;
+    transmissionId: number = null;
+    yearId: number = null;
+    fuelId: number = null;
+    doorsNumberId: number = null;
+    locationId: number = null;
+    packId: number = null;
+    invoiceNumber: string = null;
+    minMileage: number = null;
+    maxMileage: number = null;
+    serialNumber: string = null;
+    outsideColor: string = null;
+    insideColor: string = null;
+    minPrice: number = null;
+    maxPrice: number = null;
+    userId: string = null;
+}

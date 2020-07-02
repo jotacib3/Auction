@@ -1,0 +1,177 @@
+<div class="card">
+  <div style="background-color: #3A3A3A;color: white" class="card-header" (click)="toogleHidden()">
+      <div class="row">
+          <div class="col-11">
+                <span nz-tooltip nzTitle="Un click para ver los campos por donde filtrar" class="card-title"> Filtros de Búsqueda</span>
+          </div>
+          <div class="col-1">
+                <span>
+                        <a nz-tooltip nzTitle="Reiniciar Filtros" (click)="resetForm()">
+                            <i nz-icon nzType="sync" nzTheme="outline"></i>
+                        </a>
+                    </span>
+          </div>
+      </div>
+  </div>
+  <div class="card-body" *ngIf="!hidden">
+      <form id="vehicle-filter-form" [formGroup]="filterForm" novalidate>
+          <div class="row">
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-brand">Marca</label>
+                      <select required (change)="onFiltersChange()" id="vehicle-filter-brand" class="form-control" formControlName="brandId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.nombre }}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-model">Modelo</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-model" class="form-control" formControlName="modelId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let model of models" [value]="model.id">{{ model.nombre }}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-version">Versión</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-version" class="form-control" formControlName="versionId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let version of versions" [value]="version.id">{{ version.nombre }}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-transmissionType">Tipo de Transmisión</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-transmissionType" class="form-control" formControlName="transmissionTypeId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let transmissionType of transmissionTypes" [value]="transmissionType.id">{{ transmissionType.nombre }}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-year">Año</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-year" class="form-control" formControlName="yearId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let year of years" [value]="year.id">{{ year.nombre }}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-fuelType">Tipos de Combustible</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-fuelType" class="form-control" formControlName="fuelTypeId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let fuel of fuels" [value]="fuel.id">{{ fuel.nombre}}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-doorsNumber">Puertas</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-doorsNumber" class="form-control" formControlName="doorsNumberId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let doorsNumber of doorsNumbers" [value]="doorsNumber.id">{{ doorsNumber.nombre}}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-location">Ubicación</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-location" class="form-control" formControlName="locationId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let location of locations" [value]="location.id">{{ location.nombre}}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <!-- <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-pack">Paquete</label>
+                      <select (change)="onFiltersChange()" id="vehicle-filter-pack" class="form-control" formControlName="packId">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let pack of packs" [value]="pack.id">{{ pack.nombre}}</option>
+                      </select>
+                  </div>
+              </div> -->
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-InvoiceNumber">Factura</label>
+                      <input (change)="onFiltersChange()" formControlName="invoiceNumber" required type="text" id="vehicle-filter-InvoiceNumber"
+                          class="form-control" mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-MinMileage">Kilometraje Mínimo</label>
+                      <input (change)="onFiltersChange()" formControlName="minMileage" required type="number" id="vehicle-filter-MinMileage" class="form-control"
+                          mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-MaxMileage">Kilometraje Máximo</label>
+                      <input (change)="onFiltersChange()" formControlName="MaxMileage" required type="number" id="vehicle-filter-MaxMileage" class="form-control"
+                          mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-SerialNumber">Número de Serie</label>
+                      <input (change)="onFiltersChange()" formControlName="serialNumber" required type="text" id="vehicle-filter-SerialNumber"
+                          class="form-control" mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-OutsideColor">Color Exterior</label>
+                      <input (change)="onFiltersChange()" formControlName="outsideColor" required type="text" id="vehicle-filter-OutsideColor"
+                          class="form-control" mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-InsideColor">Color Interior</label>
+                      <input (change)="onFiltersChange()" formControlName="insideColor" required type="text" id="vehicle-filter-InsideColor" class="form-control"
+                          mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-MinPrice">Precio Mínimo</label>
+                      <input (change)="onFiltersChange()" formControlName="minPrice" required type="number" id="vehicle-filter-MinPrice" class="form-control"
+                          mdbActive>
+                  </div>
+              </div>
+
+              <div class="col-md-2">
+                  <div class="form-group">
+                      <label for="vehicle-filter-MaxPrice">Precio Máximo</label>
+                      <input (change)="onFiltersChange()" formControlName="maxPrice" required type="number" id="vehicle-filter-MaxPrice" class="form-control"
+                          mdbActive>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>
+
+<br>

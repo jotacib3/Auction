@@ -1,0 +1,222 @@
+<div class="row">
+  <div class="col-10">
+      <button nz-button nzType="primary" (click)="open()">Crear nueva publicacion</button>
+  </div>
+</div>
+<nz-drawer
+  [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+  [nzMaskClosable]="false"
+  [nzWidth]="720"
+  [nzVisible]="visible"
+  nzTitle="Publicar Auto"
+  (nzOnClose)="close()"
+>
+  <form nz-form [formGroup]="validateForm">
+    <div class="row">
+      <div class="col-sm-3">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select formControlName="brandId" nzPlaceHolder="Marca">
+            <nz-option *ngFor="let brand of brands" [nzLabel]="brand.nombre" [nzValue]="brand.id"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-sm-3">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select formControlName="modelId" nzPlaceHolder="Modelo">
+            <nz-option *ngFor="let data of models" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-sm-3">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select formControlName="versionId" nzPlaceHolder="Versión">
+            <nz-option *ngFor="let data of versions" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-sm-3">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-select formControlName="transmissionId" nzPlaceHolder="Transmisión">
+              <nz-option *ngFor="let data of transmissionTypes" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+    </div>
+    <div class="row"> 
+      <div class="col-sm-3">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select formControlName="yearId" nzPlaceHolder="Año">
+            <nz-option *ngFor="let data of years" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-sm-3">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select formControlName="fuelId" nzPlaceHolder="Combustible">
+            <nz-option *ngFor="let data of fuels" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-sm-3">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-select formControlName="doorsNumberId" nzPlaceHolder="No. Puertas">
+              <nz-option *ngFor="let data of doorsNumbers" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="col-sm-3">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-select formControlName="locationId" nzPlaceHolder="Ubicación">
+              <nz-option *ngFor="let data of locations" [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzGutter="8">     
+      <div nz-col nzSpan="6">
+        <nz-form-item>
+          <nz-form-control >
+            <nz-input-number 
+            [nzMin]="0"
+            [nzMax]="10000000000" 
+            [nzStep]="1"
+            formControlName="invoiceNumber" id="'invoiceNumber'" nz-input [nzPlaceHolder]="'No. Factura'">       
+            </nz-input-number>
+          <nz-form-explain *ngIf="validateForm.get('invoiceNumber')?.dirty && validateForm.get('invoiceNumber')?.errors"
+            >El precio es requerido!</nz-form-explain>
+        </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="6">
+          <nz-form-item>
+            <nz-form-control >
+              <nz-input-number 
+              [nzMin]="0"
+              [nzMax]="10000000000" 
+              [nzStep]="1"
+              formControlName="mileage" id="'mileage'" nz-input [nzPlaceHolder]="'Kilometraje'">       
+              </nz-input-number>
+            <nz-form-explain *ngIf="validateForm.get('mileage')?.dirty && validateForm.get('mileage')?.errors"
+              >El precio es requerido!</nz-form-explain>
+          </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-control >
+                  <nz-input-number 
+                  [nzMin]="0"
+                  [nzMax]="10000000000" 
+                  [nzStep]="0.1"
+                  [nzFormatter]="formatterDollar"
+                  [nzParser]="parserDollar"
+                  formControlName="price" id="'price'" nz-input [nzPlaceHolder]="'Precio Base'">       
+                  </nz-input-number>
+                <nz-form-explain *ngIf="validateForm.get('price')?.dirty && validateForm.get('price')?.errors"
+                  >El precio es requerido!</nz-form-explain>
+              </nz-form-control>
+              </nz-form-item>
+        </div>
+        <div nz-col nzSpan="6">
+            <nz-form-item>
+                <nz-form-control >
+                  <nz-input-number 
+                  [nzMin]="0"
+                  [nzMax]="10000000000" 
+                  [nzStep]="1"
+                  formControlName="serialNumber" id="'serialNumber'" nz-input [nzPlaceHolder]="'No. Serie'">       
+                  </nz-input-number>
+                <nz-form-explain *ngIf="validateForm.get('serialNumber')?.dirty && validateForm.get('serialNumber')?.errors"
+                  >El # de serie es requerido!</nz-form-explain>
+              </nz-form-control>
+              </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzGutter="8">  
+        <div nz-col nzSpan="8">
+            <nz-form-item>
+              <nz-form-control >
+                <input formControlName="insideColor" id="'insideColor'" nz-input placeholder="Color Interior" />
+              <nz-form-explain *ngIf="validateForm.get('insideColor')?.dirty && validateForm.get('insideColor')?.errors"
+                >El color interior es requerido!</nz-form-explain>
+            </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="8">
+              <nz-form-item>
+                  <nz-form-control >
+                      <input formControlName="outsideColor" id="'outsideColor'" nz-input placeholder="Color Exterior" />
+                    <nz-form-explain *ngIf="validateForm.get('outsideColor')?.dirty && validateForm.get('outsideColor')?.errors"
+                      >El color exterior es requerido!</nz-form-explain>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+     
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <nz-form-item>
+          <nz-form-control>
+            <textarea
+              nz-input
+              formControlName="equipmentDetails"
+              placeholder="Equipamiento"
+              [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row nzGutter="8">
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <app-photo-upload (upload)="uploadFile($event)"></app-photo-upload>
+           </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <app-photo-upload (upload)="uploadFile1($event)"></app-photo-upload>
+           </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <app-photo-upload (upload)="uploadFile2($event)"></app-photo-upload>
+           </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <app-photo-upload (upload)="uploadFile3($event)"></app-photo-upload>
+           </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <app-photo-upload (upload)="uploadFile4($event)"></app-photo-upload>
+           </nz-form-item>
+      </div>
+    </div>
+  </form>
+  <div class="footer">
+    <nz-form-item>
+      <nz-form-control>
+          <button (click)="submitForm()" nz-button class="ant-btn btn ant-btn-primary">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</nz-drawer>
+

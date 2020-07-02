@@ -1,0 +1,31 @@
+<div nz-row>
+    <div nz-col nzSpan="18" nzOffset="3">
+      <div nz-row>
+        <nz-table [nzTitle]="title" #basicTable [nzData]="data">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td>{{data.id}}</td>
+                <td>{{data.nombre}}</td>
+                <td><a title (click) = "showEdit(data)"><i nz-icon type="profile" [theme]="'twotone'" [twoToneColor]="'#eb2f96'"></i></a></td>
+                <td><a title (click) = "onDelete(data)"><i nz-icon type="delete" [theme]="'twotone'" [twoToneColor]="'#ff0000'"></i></a></td>
+              </tr>
+            </tbody>
+        </nz-table>
+      </div>
+      <div nz-row>
+          <ul nz-menu  [nzMode]="'horizontal'" style="line-height: 64px;">
+              <button nz-button nzType="primary" (click) = "showAdd()">Add</button>
+           </ul>
+      </div>
+      <app-catalog-add *ngIf = "add"  (addItemEvent)="onAdd($event)"></app-catalog-add>
+      <app-catalog-edit *ngIf = "edit"  [valueInput]="value" (editItemEvent)="onEdit($event)"></app-catalog-edit>
+    </div>
+  </div>

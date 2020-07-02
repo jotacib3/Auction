@@ -1,0 +1,200 @@
+<nz-drawer
+    [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+    [nzMaskClosable]="false"
+    [nzWidth]="'100%'"
+    [nzVisible]="modal"
+    nzTitle="Create"
+    (nzOnClose)="hide()"
+    >
+   <div class="row">
+    <div class="col-2" *ngIf="IsUndefined(vehicle) && IsUndefined(vehicle.photos)">
+       
+      <img *ngIf="IsUndefined(vehicle.photos)" (click)="change(vehicle.photos[0].fileName)" src="{{this.repo.getPhoto(vehicle.photos[0].fileName)}}" class="img-fluid img-thumbnail image-uploader-box" style="height: 170px">
+      <img *ngIf="IsUndefined(vehicle.photos)" (click)="change(vehicle.photos[1].fileName)" src="{{this.repo.getPhoto(vehicle.photos[1].fileName)}}" class="img-fluid img-thumbnail image-uploader-box" style="height: 170px">
+      <img *ngIf="IsUndefined(vehicle.photos)" (click)="change(vehicle.photos[2].fileName)" src="{{this.repo.getPhoto(vehicle.photos[2].fileName)}}" class="img-fluid img-thumbnail image-uploader-box" style="height: 170px">
+      <img *ngIf="IsUndefined(vehicle.photos)" (click)="change(vehicle.photos[3].fileName)" src="{{this.repo.getPhoto(vehicle.photos[3].fileName)}}" class="img-fluid img-thumbnail image-uploader-box" style="height: 170px">
+      <img *ngIf="IsUndefined(vehicle.photos)" (click)="change(vehicle.photos[4].fileName)" src="{{this.repo.getPhoto(vehicle.photos[4].fileName)}}" class="img-fluid img-thumbnail image-uploader-box" style="height: 170px">
+    </div>
+    <div class="col-6">
+      <img *ngIf="IsUndefined(vehicle.photos)" src="{{this.repo.getPhoto(src ? IsUndefined(src) : vehicle.photos[0].fileName)}}" class="img-fluid img-thumbnail" style="height: 400px;object-fit: cover;object-position: center">
+
+      <div class="clearfix"></div>
+
+      <h1>FICHA TÉCNICA</h1>
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">MARCA</th>
+                  <th class="col">MODELO</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex" *ngIf="IsUndefined(vehicle.brand)">
+                  <td class="col">
+                      <strong>{{vehicle?.brand?.nombre}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.model?.nombre}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">VERSIÓN</th>
+                  <th class="col">TRANSMISIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex" *ngIf="IsUndefined(vehicle.version)">
+                  <td class="col">
+                      <strong>{{vehicle?.version?.nombre}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.transmission.nombre}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">AÑO</th>
+                  <th class="col">COMBUSTIBLE</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex" *ngIf="IsUndefined(vehicle.year)">
+                  <td class="col">
+                      <strong>{{vehicle?.year.nombre}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.fuel.nombre}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+
+                  <th class="col">NO. PUERTAS</th>
+                  <th class="col">UBICACIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex" *ngIf="IsUndefined(vehicle.location)">
+                  <td class="col">
+                      <strong>{{vehicle?.doorsNumber.nombre}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.location.nombre}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">NO. FACTURA</th>
+                  <th class="col">KILOMETRAJE</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex" >
+                  <td class="col">
+                      <strong>{{vehicle?.invoiceNumber}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.mileage}} Km</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">COLOR EXTERIOR</th>
+                  <th class="col">COLOR INTERIOR</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex">
+                  <td class="col">
+                      <strong>{{vehicle?.outsideColor}}</strong>
+                  </td>
+                  <td class="col">
+                      <strong>{{vehicle?.insideColor}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+      <table class="table table-sm">
+          <thead>
+              <tr class="d-flex">
+                  <th class="col">NRO. SERIE</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="d-flex">
+                  <td class="col">
+                      <strong>{{vehicle?.serialNumber}}</strong>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+  <div class="col-4">
+      <h1>$ {{vehicle.price}}</h1>
+      <h3 *ngIf="IsUndefined(vehicle.year)"> {{vehicle.year.nombre}} | {{vehicle.mileage}} Km</h3>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <nz-countdown [nzValue]="getTime(vehicle.time)" [nzTitle]="'Tiempo Restante'"[nzFormat]="'DD:HH:mm:ss:SSS'"></nz-countdown>
+      <form id="offer-form" (submit)="submit()" [formGroup]="form" novalidate>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="offer-form-Price">Precio</label>
+                      <input style="background: lightgray" formControlName="price" required type="text" id="offer-form-Price" class="form-control" mdbActive>
+                      <ul class="validation-errors" *ngIf="!form.get('price').pristine">
+                          <li class="text-danger" *ngIf="form.get('price').hasError('required')">
+                              Este campo es obligatorio
+                          </li>
+                          <li class="text-danger" *ngIf="!form.get('price').hasError('required') && form.get('price').hasError('onlyNumbers')">
+                              Solo admite números
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+
+              <div class="col-md-12">
+                  <button form="offer-form" type="submit" style="border-radius: 50px;" class="btn btn-primary btn-lg btn-block waves-light pull-right"
+                      mdbRippleRadius><strong>OFERTAR</strong></button>
+
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <h1>DESCRIPCIÓN DEL VENDEDOR </h1>
+                  <p>{{vehicle.equipmentDetails}}</p>
+
+              </div>
+          </div>
+      </form>
+  </div>
+   </div>
+      
+ 
+</nz-drawer>

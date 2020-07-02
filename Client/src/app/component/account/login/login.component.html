@@ -1,0 +1,46 @@
+<div>
+    <div nz-row style="margin-top: 180px; margin-bottom: 40px">
+      <div nz-col nzSpan="12" nzOffset="10">
+          <h1 class="form-signin-heading text-white"> Entrar:</h1>
+      </div>   
+    </div>
+  <div nz-row nzJustify="center" nzAlign="middle">
+      <div nz-col nzSpan="12" nzOffset="10">
+        <form class="p-3 form" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+              <nz-form-control >
+                <nz-input-group [nzPrefix]="mail" nzSize="large">
+                  <input formControlName="email" nz-input type="email" placeholder="email">
+                </nz-input-group>
+                <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors">Su correo no es válido.</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                  <nz-input-group [nzPrefix]="prefixLock" [nzSuffix]="suffixTemplate" nzSize="large">
+                      <input
+                        formControlName="password"
+                        [type]="passwordVisible ? 'text' : 'password'"
+                        nz-input
+                        placeholder="password"
+                      />
+                    </nz-input-group>
+                    <ng-template #suffixTemplate>
+                      <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                    </ng-template>
+                <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors"> Se requiere contraseña para continuar.</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>       
+            <nz-form-item>
+              <nz-form-control>
+                <a routerLink ="/recovery-password" class="login-form-forgot text-white">¿Ha olvidado su contraseña?</a>
+                <button nz-button nzType="primary" class="login-form-button">Entrar</button>
+                <a routerLink ="/register-employee" class="text-white">¡Regístrese!</a>
+              </nz-form-control>
+            </nz-form-item>
+         </form>
+         <ng-template #mail><i nz-icon type="mail" theme="outline"></i></ng-template> 
+         <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>
+         </div>
+    </div>   
+</div>

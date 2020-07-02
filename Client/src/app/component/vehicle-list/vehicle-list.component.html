@@ -1,0 +1,101 @@
+<div nz-row class="pt-2 pb-2 mt-2 mb-2 ">
+  <div class="col pl-2 ml-2">
+      <h1><strong>AUTOS</strong></h1> 
+      <h1><strong>PUBLICADOS</strong></h1>
+  </div>
+  <div class="col justify-content-end">
+      <app-vehicle-form (loadPublication)="loadData()"></app-vehicle-form>
+  </div>
+
+</div>
+<nz-empty *ngIf="!(publications && publications.length)"></nz-empty>
+<div nz-row>
+  <div nz-col nzSpan="18" nzOffset="3">
+    <div nz-row nzJustify="center" nzAlign="middle"> 
+        <nz-table #nzTable 
+        [nzData]="publications"
+        nzShowPagination="false"
+        *ngIf="publications && publications.length">
+
+            <thead>
+              <tr>
+                <th nzShowExpand></th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Transmission</th>
+                <th>Estado</th>
+                <th>Publicada</th>
+                <th>Monto Solicitado</th>
+                <th>Tiempo Restante</th>
+                <th>Ofertas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                  
+                <tr [ngStyle]="{backgroundColor: getColor(data.enabled)}">
+                  <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+                  <td>{{data.brand.nombre}}</td>
+                  <td>{{data.model.nombre}}</td>
+                  <td>{{data.year.nombre}}</td>
+                  <td>{{data.transmission.nombre}}</td>
+                  <td *ngIf="data.enabled">En Subasta</td>
+                  <td *ngIf="data.enabled === null">Validando</td>
+                  <td *ngIf="data.enabled === false && !data.offer.length">Sin Ofertas</td>
+                  <td *ngIf="data.enabled === false && data.offer.length">Vendida</td>
+                  <td>{{data.created | date : 'dd:HH:mm'}}</td>
+                  <td>$ {{data.price}}</td>
+                  <td>
+                      <nz-countdown *ngIf="data.enabled !== null" [nzValue]="getTime(data.time)" [nzFormat]="'DD:HH:mm:ss:SSS'"></nz-countdown>                         
+                  </td>
+                  <td><nz-badge [nzCount]="data.offer.length" ></nz-badge></td>
+                </tr>
+                
+                <tr
+                 [nzExpand]="mapOfExpandData[data.id]">
+                 <td></td>
+                 <td colspan="7">
+                    <nz-table 
+                         #innerTable [nzData]="getOffer(data.offer)"
+                         *ngIf="data.enabled === false"                         
+                         nzShowPagination ="false"
+                         nzTitle ="DATOS DISTRIBUIDOR"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Email</th>
+                            <th>Oferta</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <ng-template ngFor let-data [ngForOf]="innerTable.data">
+                          <tr >
+                            <td>{{data.user.email}}</td>
+                            <td>{{data.price}}</td>
+                          </tr>
+                        </ng-template>
+                        </tbody>
+                      
+                      </nz-table>
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </nz-table>
+    </div>
+    <div nz-row nzType="flex" nzJustify="center" nzAlign="middle">
+      <div nz-col >
+        <nz-pagination *ngIf="publications && publications.length"
+          [nzPageIndex]="pagination.currentPage" 
+          [nzPageSize]="pagination.itemPerPage"
+          [nzTotal]="pagination.totalItems"
+          nzSize="small"
+          (nzPageIndexChange)="CurrentPageDataChange($event)">
+        </nz-pagination>
+      </div>
+      </div>
+   </div>
+</div>
+
+

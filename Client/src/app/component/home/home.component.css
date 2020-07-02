@@ -1,0 +1,53 @@
+.home-title {
+    height: 710px;
+    background: url(/assets/img/banner_2.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.home-buy-sell {
+    height: auto;
+    background: url(/assets/img/background_services.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.home-recents {
+    height: 700px;
+    background: url(/assets/img/banner_2.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.contacts {
+    height: auto;
+    background: url(/assets/img/contact.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.sellbuy-title {
+    color: white;
+    background-color: #081931;
+    padding: 20px;
+    font-size: 3.0rem;
+    opacity: 0.5;
+}
+
+.custom-control, .custom-control:active, .custom-control:focus {
+    padding: 5px;
+    background-color: white;
+    color: black;
+}

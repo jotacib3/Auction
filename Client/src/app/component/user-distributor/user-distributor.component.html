@@ -1,0 +1,65 @@
+<h1></h1>
+
+<div class="container">
+
+  <div class="col-md-12">
+      <div class="table-responsive">
+          <nz-table #nestedTable [nzData] = "users" [nzPageSize]="10" nzBordered="true" nzTitle="Distribuidores" nzSize="middle">
+              <thead>
+                <tr>
+                  <th nzAlign="center">Nombre</th>
+                  <th nzAlign="center">Email</th>
+                  <th nzAlign="center"></th>
+                  <th nzAlign="center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-template ngFor let-user [ngForOf]="nestedTable.data">
+                  <tr>
+                    <td nzAlign="center">{{user.userName}}</td>
+                    <td nzAlign="center">{{user.email}}</td>
+                    <td nzAlign="center"><button nz-button nzType="primary" nzSize="small" (click)="showModal(user)">Editar</button></td>
+                    <td nzAlign="center"><button nz-button nzType="danger" nzSize="small" (click)="onDelete(user.id)">Eliminar</button></td>
+                  </tr>
+                </ng-template>
+              </tbody>
+        </nz-table>     
+      </div>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Editar Empleado" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixUser">
+              <input type="text" nz-input formControlName="userName" placeholder="Nombre" />
+            </nz-input-group>
+            <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors">
+              Por favor, escriba un nombre!
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input type="text" nz-input formControlName="password" placeholder="Número de teléfono" />
+            </nz-input-group>
+            <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">
+              Por favor, escriba un número de teléfono!
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+    </form>
+      <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
+      <ng-template #prefixLock><i nz-icon type="mail"></i></ng-template>
+    
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" 
+          [disabled]="((validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors) ||
+                      (validateForm.get('password')?.dirty && validateForm.get('password')?.errors)) ||
+                      (validateForm.get('userName')?.pristine && validateForm.get('password')?.pristine)"
+          (click)="handleOk()">OK</button>
+        <button nz-button nzType="danger"  (click)="handleCancel()">Cancel</button>
+    </ng-template>
+</nz-modal>

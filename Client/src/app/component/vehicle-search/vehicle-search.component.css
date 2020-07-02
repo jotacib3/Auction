@@ -1,0 +1,29 @@
+#vehicle-search-title {
+    margin-top: -50px;
+    height: 400px;
+    background: url(/assets/img/banner_1.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background-color: transparent;
+}
+
+.detail {
+    width: 100%;
+    font-size: 40px;
+    line-height: 60px
+  }
+
+  .colr{
+    color: rgba(92, 88, 88, 0.85);
+  }
+ 
+.oel{
+  transition: transform 1s;
+  transform: scale(1,1);
+}
+
+.oel:hover{
+  transform: scale(1.04,1.04);
+}

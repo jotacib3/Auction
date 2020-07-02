@@ -1,0 +1,47 @@
+import { Brand } from './brand';
+import { Fuel } from './fuel';
+import { Location } from './location';
+import { Model } from './model';
+import { Pack } from './pack';
+import { Transmission } from './transmission';
+import { Version } from './version';
+import { Year } from './year';
+import { DoorsNumber } from './doors-number';
+import { User } from './user';
+import { Photo } from './photo';
+
+export class Vehicle {
+    id: number;
+    invoiceNumber: string;
+    mileage: number;
+    serialNumber: string;
+    insideColor: string;
+    outsideColor: string;
+    price: number;
+    equipmentDetails: string;
+    enabled: boolean;
+    created: Date;
+    time: number;
+    updated: Date;
+    brandId: number;
+    modelId: number;
+    fuelId: number;
+    locationId: number;
+    packId: number;
+    transmissionTypeId: number;
+    versionId: number;
+    yearId: number;
+    doorsNumberId: number;
+    brand: Brand;
+    model: Model;
+    version: Version;
+    transmissionType: Transmission;
+    year: Year;
+    fuel: Fuel;
+    doorsNumber: DoorsNumber;
+    location: Location;
+    pack: Pack;
+    userId: string;
+    user: User;
+    photos: Photo[];
+}

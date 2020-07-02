@@ -1,0 +1,69 @@
+<div nz-row>
+    <div nz-col nzSpan="18" nzOffset="3">
+      <div nz-row>
+        <nz-table  #basicTable [nzData]="offers" nzTitle="Ofertas realizadas."
+        nzShowPagination="false">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Modelo</th>                
+                <th>Año</th>
+                <th>Ubicacion</th>
+                <th>Publicación</th>
+                <th>Oferta</th>
+                <th>Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data" [ngStyle]="{backgroundColor: getColor(data.enabled)}" >
+                <td>{{brands[data.publication.brandId -1]?.nombre}}</td>
+                <td>{{models[data.publication.modelId - 1]?.nombre}}</td>
+                <td>{{years[data.publication.yearId - 1]?.nombre}}</td>                
+                <td>{{locations[data.publication.locationId - 1]?.nombre}}</td>
+                <td>{{data.publication.created | date : 'dd-MM-yyyy' }}</td>
+                <td>{{data.created | date : 'dd-MM-yyyy'}}</td>
+                <td>{{data.price}}</td>
+                <td><a title (click) = "showModal(data.price, data.id)"><i nz-icon type="dollar" [theme]="'outline'" style="color: rgba(22, 22, 21, 0.952);"></i> Editar</a></td>
+                <td><a *ngIf="data.enabled === false" title (click) = "onDelete(data)"><i nz-icon type="delete" [theme]="'twotone'" [twoToneColor]="'#ff0000'"></i></a></td>
+              </tr>
+            </tbody>
+        </nz-table>
+      </div>
+      <div nz-row nzType="flex" nzJustify="center" nzAlign="middle">
+          <div nz-col >
+            <nz-pagination *ngIf="offers && offers.length"
+              [nzPageIndex]="pagination.currentPage" 
+              [nzPageSize]="pagination.itemPerPage"
+              [nzTotal]="pagination.totalItems"
+              nzSize="small"
+              (nzPageIndexChange)="CurrentPageDataChange($event)">
+            </nz-pagination>
+          </div>
+          </div>
+  </div>
+
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Editar Oferta" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group [nzPrefix]="prefixUser">
+                <input type="number" nz-input formControlName="userName" placeholder="Oferta" />
+              </nz-input-group>
+              <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('password')?.errors">
+                Por favor, escriba una oferta!
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+      </form>
+        <ng-template #prefixUser><i nz-icon type="dollar"></i></ng-template>
+      
+      <ng-template #modalFooter>
+          <button nz-button nzType="primary" 
+            [disabled]="(validateForm.get('userName')?.dirty && validateForm.get('userName')?.pristine)"
+            (click)="handleOk()">OK</button>
+          <button nz-button nzType="danger" (click)="handleCancel()">Cancel</button>
+      </ng-template>
+  </nz-modal>
+  
+  

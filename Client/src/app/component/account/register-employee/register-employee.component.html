@@ -1,0 +1,267 @@
+<div class="container">
+  <div class="abs-center">
+    <div nz-row nzType="flex" nzJustify="center" nzAlign="midle" >
+        <form nz-form [nzLayout]="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-control >
+                          <input nz-input formControlName="email" id="email" placeholder="Correo"/>
+                          <nz-form-explain *ngIf="validateForm.get('email')?.dirty && validateForm.get('email')?.errors">
+                            Dirección de correo no válida.
+                          </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control >
+                          <input
+                            nz-input
+                            type="password"
+                            id="password"
+                            formControlName="password"
+                            (ngModelChange)="updateConfirmValidator()"
+                            placeholder="Contraseña"
+                          />
+                          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors"
+                            >Por favor,inserte su contraseña.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input type="password" formControlName="checkPassword" id="checkPassword" placeholder="Confirmar contraseña"/>
+                          <nz-form-explain
+                            *ngIf="validateForm.get('checkPassword')?.dirty && validateForm.get('checkPassword')?.errors"
+                          >
+                            <ng-container *ngIf="validateForm.get('checkPassword')?.hasError('required')">
+                              Por favor confirme su contraseña.
+                            </ng-container>
+                            <ng-container *ngIf="validateForm.get('checkPassword')?.hasError('confirm')">
+                              Contraseñas inconsistentes.
+                            </ng-container>
+                          </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input id="name" formControlName="name" placeholder="Nombre" />
+                          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors"
+                            >Por favor, introduzca su nombre.</nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control >
+                          <input nz-input formControlName="fatherSurname" id="fatherSurname" placeholder="Primer apellido"/>
+                          <nz-form-explain *ngIf="validateForm.get('fatherSurname')?.dirty && validateForm.get('fatherSurname')?.errors">
+                            Por favor, introduzca su primer apellido.
+                          </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input type="motherSurname" formControlName="motherSurname" id="motherSurname" placeholder="Segundo apellido"/>
+                          <nz-form-explain *ngIf="validateForm.get('fatherSurname')?.dirty && validateForm.get('fatherSurname')?.errors">
+                            Por favor, introduzca su segundo apellido.
+                            </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <!-- <nz-form-item>
+                        <nz-form-control [nzValidateStatus]="validateForm.controls['phoneNumber']">
+                            <div class="number-input">
+                              <nz-input-number
+                              [nzMin]="10000"
+                              [nzMax]="10000000000" 
+                              [nzStep]="1"
+                              formControlName="phoneNumber" id="'phoneNumber'" nz-input nzPlaceHolder="Telefono movil">
+                              </nz-input-number>
+                              </div>
+                          <nz-form-explain *ngIf="validateForm.get('phoneNumber')?.dirty && validateForm.get('phoneNumber')?.errors"
+                            >Por favor introduzca su número de móvil.</nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                            <div class="number-input">
+                                <nz-input-number
+                                [nzMin]="0"
+                                [nzMax]="10000000000" 
+                                [nzStep]="1"
+                                formControlName="noEmployee" id="'noEmployee'" nz-input nzPlaceHolder="No. empleado">
+                              </nz-input-number>
+                              </div>
+                          <nz-form-explain *ngIf="validateForm.get('noEmployee')?.dirty && validateForm.get('noEmployee')?.errors"
+                            >Por favor, introduzca su número de empleado.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                      </nz-form-item> -->
+
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <!-- <nz-form-item>
+                        <nz-form-control >
+                          <input nz-input formControlName="fatherSurname" id="fatherSurname" placeholder="Primer apellido"/>
+                          <nz-form-explain *ngIf="validateForm.get('fatherSurname')?.dirty && validateForm.get('fatherSurname')?.errors">
+                            Por favor, introduzca su primer apellido.
+                          </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input type="motherSurname" formControlName="motherSurname" id="motherSurname" placeholder="Segundo apellido"/>
+                          <nz-form-explain *ngIf="validateForm.get('fatherSurname')?.dirty && validateForm.get('fatherSurname')?.errors">
+                            Por favor, introduzca su segundo apellido.
+                            </nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item> -->
+                      <nz-form-item>
+                        <nz-form-control [nzValidateStatus]="validateForm.controls['phoneNumber']">
+                            <div class="number-input">
+                              <nz-input-number
+                              [nzMin]="10000"
+                              [nzMax]="10000000000" 
+                              [nzStep]="1"
+                              formControlName="phoneNumber" id="'phoneNumber'" nz-input nzPlaceHolder="Telefono movil">
+                              </nz-input-number>
+                              </div>
+                          <nz-form-explain *ngIf="validateForm.get('phoneNumber')?.dirty && validateForm.get('phoneNumber')?.errors"
+                            >Por favor introduzca su número de móvil.</nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                            <div class="number-input">
+                                <nz-input-number
+                                [nzMin]="0"
+                                [nzMax]="10000000000" 
+                                [nzStep]="1"
+                                formControlName="noEmployee" id="'noEmployee'" nz-input nzPlaceHolder="No. empleado">
+                              </nz-input-number>
+                              </div>
+                          <nz-form-explain *ngIf="validateForm.get('noEmployee')?.dirty && validateForm.get('noEmployee')?.errors"
+                            >Por favor, introduzca su número de empleado.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                      </nz-form-item>
+
+                      <nz-form-item>
+                        <nz-form-control >
+                            <div class="number-input">
+                            <nz-input-number
+                            [nzMin]="0"
+                            [nzMax]="10000000000" 
+                            [nzStep]="1"
+                            formControlName="fixNumber" id="'fixNumber'" nz-input nzPlaceHolder="Telefono fijo">
+                          </nz-input-number>
+                          </div>
+                          <nz-form-explain *ngIf="validateForm.get('fixNumber')?.dirty && validateForm.get('fixNumber')?.errors"
+                            >Por favor, introduzca su número de teléfono fijo.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control >
+                            <input formControlName="street" id="'street'" nz-input placeholder="Calle" />
+                          <nz-form-explain *ngIf="validateForm.get('street')?.dirty && validateForm.get('street')?.errors"
+                            >Por favor, introduzca su calle.</nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input id="colony" formControlName="colony" placeholder="Colonia" />
+                          <nz-form-explain *ngIf="validateForm.get('colony')?.dirty && validateForm.get('colony')?.errors"
+                            >Por favor, introduzca su colonia.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <!-- <nz-form-item>
+                          <nz-form-control >
+                            <input nz-input formControlName="outsideNumber" id="outsideNumber" placeholder="outside color"/>
+                            <nz-form-explain *ngIf="validateForm.get('outsideNumber')?.dirty && validateForm.get('outsideNumber')?.errors">
+                              The input is not valid outside color!
+                            </nz-form-explain>
+                          </nz-form-control>
+                        </nz-form-item> -->
+              
+                </div>
+                <div nz-col [nzSpan]="8">
+                    
+                      <!-- <nz-form-item>
+                        <nz-form-control>
+                          <input nz-input type="insideNumber" formControlName="insideNumber" id="insideNumber" placeholder="inside color"/>
+                          <nz-form-explain *ngIf="validateForm.get('insideNumber')?.dirty && validateForm.get('insideNumber')?.errors"
+                          >Please input your phone inside color!</nz-form-explain>
+                        </nz-form-control>
+                      </nz-form-item> -->
+                      <nz-form-item>
+                        <nz-form-control>
+                            <input formControlName="zipCode" id="'zipCode'" nz-input placeholder="Codigo postal" />
+                          <nz-form-explain *ngIf="validateForm.get('zipCode')?.dirty && validateForm.get('zipCode')?.errors"
+                            >Por favor, introduzca su código postal.</nz-form-explain
+                          >
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                        <nz-form-control>
+                            <nz-select formControlName="cityId" nzPlaceHolder="Ciudad">
+                              <ul *ngFor="let data of cities">
+                                  <nz-option  [nzLabel]="data.nombre" [nzValue]="data.id"></nz-option>
+
+                              </ul>
+                               
+                              </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item>
+                          <nz-form-control>
+                              <nz-select formControlName="stateId" nzPlaceHolder="Estado">
+                                  <nz-option *ngFor="let data of states" [nzLabel]=data.nombre [nzValue]=data.id></nz-option>
+                                </nz-select>
+                          </nz-form-control>
+                        </nz-form-item>
+                      <nz-form-item>
+                              <div class="clearfix">
+                                  <nz-upload
+                                    nzAction="https://jsonplaceholder.typicode.com/posts/"
+                                    nzListType="picture-card"
+                                    [(nzFileList)]="fileList"
+                                    [nzShowButton]="fileList.length <1"
+                                    [nzShowUploadList]="showUploadList"
+                                    [nzPreview]="handlePreview"
+                                  >
+                                    <i nz-icon type="plus"></i>
+                                    <div class="ant-upload-text">Upload</div>
+                                  </nz-upload>
+                                  <nz-modal
+                                    [nzVisible]="previewVisible"
+                                    [nzContent]="modalContent"
+                                    [nzFooter]="null"
+                                    (nzOnCancel)="previewVisible = false"
+                                  >
+                                    <ng-template #modalContent>
+                                      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                                    </ng-template>
+                                  </nz-modal>
+                                </div>
+                        </nz-form-item>
+                      <nz-form-item>
+                      </nz-form-item>
+              
+                </div>
+              </div>
+              <div nz-row>
+                  <div nz-col [nzSpan]="24">
+                <nz-form-item nz-row style="margin-bottom:8px;">
+                    <nz-form-control [nzSpan]="14" [nzOffset]="11">
+                      <button nz-button nzType="primary">Registrar</button>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>        
+            </form>        
+    </div>
+  </div>
+</div>

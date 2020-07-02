@@ -1,0 +1,61 @@
+<div class="container">
+
+    <div class="col-md-12">
+      <div class="table-responsive">
+          <nz-table #nestedTable [nzData] = "users" [nzPageSize]="10" nzTitle="Employees" nzSize="middle">
+              <thead>
+                <tr>
+                  <th nzAlign="center" nzShowExpand></th>
+                  <th nzAlign="center">NoEmployee</th>
+                  <th nzAlign="center">FullName</th>
+                  <th nzAlign="center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-template ngFor let-user [ngForOf]="nestedTable.data">
+                  <tr>
+                    <td nzAlign="center"><i nz-icon nzType="plus-square" nzTheme="outline" (click)="Expand(user.id)"></i></td>
+                    <td nzAlign="center">{{user.employeeData?.noEmployee}}</td>
+                    <td nzAlign="center">{{user.employeeData?.name}} {{user.employeeData?.fatherSurname}} {{user.employeeData?.motherSurname}}</td>
+                    <td nzAlign="center">
+                      <button [disabled]="!(user.enabled !== true)"  nzSize="small" nz-button nzType="primary" (click)="Authorize(user.id)">Autorizar</button>
+                      <button [disabled]="!(user.enabled === null)" nzSize="small" nz-button nzType="danger" (click)="Unauthorize(user.id)">Desautorizar</button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="dic[user.id]">
+                    <td></td>
+                    <td colspan="7">
+                      <nz-table #innerTable [nzData]= "users" nzSize="middle" [nzShowPagination]="false">
+                        <thead>
+                          <tr>
+                            <th nzAlign="center">Email</th>
+                            <th nzAlign="center">PhoneNumber</th>
+                            <th nzAlign="center">FixNumber</th>
+                            <!-- <th nzAlign="center">City</th>
+                            <th nzAlign="center">State</th> -->
+                            <th nzAlign="center">Street</th>
+                            <th nzAlign="center">Colony</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td nzAlign="center">{{user.email}}</td>
+                            <td nzAlign="center">{{user.employeeData?.cellNumber}}</td>
+                            <td nzAlign="center">{{user.employeeData?.fixNumber}}</td>
+                            <!-- <td nzAlign="center">{{user.employeeData?.city?.name}}</td>
+                            <td nzAlign="center">{{user.employeeData?.state?.name}}</td> -->
+                            <td nzAlign="center">{{user.employeeData?.street}}</td>
+                            <td nzAlign="center">{{user.employeeData?.colony}}</td>
+                          </tr>
+                        </tbody>
+                      </nz-table>
+                    </td>
+                  </tr>
+              </ng-template>
+            </tbody>
+          </nz-table>
+          <!-- <img src='http://localhost:1316/Uploads/19cf6b3c-ee72-43b2-8840-339896c0a67e.jpg'> -->
+      </div>
+    </div>
+  </div>
+  

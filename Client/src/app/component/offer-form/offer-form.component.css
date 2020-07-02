@@ -1,0 +1,52 @@
+th, td, tr, table, thead, tbody {
+    border: none !important;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+table {
+    margin-bottom: 0;
+}
+
+thead {
+    color: #666666;
+}
+
+tbody {
+    color: #353535;
+}
+
+b, strong {
+    font-weight: bold;
+}
+
+table.table-sm th, table.table-sm td {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
+
+.card-collapse {
+    background-color: #D7DDF2;
+    border: 1px solid #6270A5;
+}
+
+.table-collapse {
+    margin-bottom: 20px;
+}
+
+.form-control-rounded {
+    border-radius: 30px !important;
+    font-size: 20px;
+    padding: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.btn-select {
+    background: #D7DDF2;
+    border: 2px solid black;
+    color: black !important;
+}

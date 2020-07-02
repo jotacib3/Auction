@@ -1,0 +1,16 @@
+<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="prefixLock">
+          <input formControlName="nombre" nz-input type="nombre" placeholder="nombre">
+        </nz-input-group>
+        <nz-form-explain *ngIf="validateForm.get('nombre').dirty && validateForm.get('nombre').errors"> El nombre de la marca es requerido</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" [disabled]="!validateForm.valid">Crear</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template> 
