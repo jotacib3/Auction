@@ -10,7 +10,7 @@ namespace backend.Helpers
         //Roles Params
         public const string ROLE_EMPLOYEE = "EMPLOYEE";
         public const string ROLE_DISTRIBUTOR = "DISTRIBUTOR";
-        public const string ROLE_ADMIN = "ADMINAMDGM";
+        public const string ROLE_ADMINGM = "ADMINGM";
         public const string ROLE_ADMINAMDGM = "ADMINAMDGM";
 
         //Filter

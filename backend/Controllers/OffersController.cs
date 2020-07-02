@@ -10,6 +10,7 @@ using Entities.Helpers;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
@@ -26,17 +27,18 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOffers([FromQuery]PagedParams param, [FromQuery]string Id )
-        {
+        public async Task<IActionResult> GetAllOffers([FromQuery]OfferParams param)
+         {
             IQueryable<Offer> queryable = _repoWrapper.Offer.Queryable();
 
-            if (User.IsInRole(UserParams.ROLE_EMPLOYEE))
+            if (param.Role == UserParams.ROLE_EMPLOYEE)
             {
-                queryable.Where(u => u.Publication.UserId.Equals(Id));
+                queryable = queryable.Where(u => u.Publication.UserId.Equals(param.Id) && u.Enabled == true);
             }
-            else if (User.IsInRole(UserParams.ROLE_DISTRIBUTOR))
+            else if (param.Role == UserParams.ROLE_DISTRIBUTOR)
             {
-                queryable.Where(d => d.UserId.Equals(Id));
+                
+                queryable =  queryable.Where(d => (d.UserId.Equals(param.Id) && d.Enabled == true));
             }
             var offers = await PagedList<Offer>.CreateAsync(queryable.OrderByDescending(
                       c => c.Id), param.PageNumber, param.PageSize);

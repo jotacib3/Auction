@@ -45,10 +45,10 @@ namespace backend.Helpers
             }));
         }
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration config)
-        {
-            var connectionString = config["sqlconnection:connectionString"];
-            // services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString))
-            //    .AddScoped<RepositoryContext>();
+        {  
+            //var connectionString = config["sqlconnection:connectionString"];
+            //services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connectionString))
+               //.AddScoped<RepositoryContext>();
             services.AddDbContext<RepositoryContext>(options =>
             options.UseInMemoryDatabase("CarDb"));
         }
@@ -71,9 +71,6 @@ namespace backend.Helpers
                        ValidateAudience = true,
                        ValidateLifetime = true,
                        ValidateIssuerSigningKey = true,
-
-                       ValidIssuer = "http://localhost:1316",
-                       ValidAudience = "http://localhost:1316",
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Llave_secreta"]))
                    };
                });

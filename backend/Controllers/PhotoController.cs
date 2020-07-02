@@ -22,7 +22,7 @@ namespace backend.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHostingEnvironment _host;
 
-        private readonly int MAX_BYTES = 1 * 1024 * 1024;
+        private readonly int MAX_BYTES = 3 * 1024 * 1024;
         private readonly string[] ACCEPTED_FILE_TYPES =new[] {".jpg","jpeg", ".png" };
         public PhotoController(IRepositoryWrapper repoWrapper, IUnitOfWork unitOfWork,
                                IHostingEnvironment host)

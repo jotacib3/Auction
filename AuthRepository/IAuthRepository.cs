@@ -16,11 +16,11 @@ namespace AuthRepo
         Task<IdentityResult> RegisterEmployee(RegisterEmployeeModel model);
         Task<User> Login(LoginModel model);
         Task<IdentityResult> AddRole(IdentityRole role);
-        Task<IdentityResult> ChangePassword(ChangePasswordModel model, ClaimsPrincipal user);
-        Task<IdentityResult> SetPassword(SetPasswordModel model, ClaimsPrincipal user);
-        Task<IdentityResult> ResetPassword(ResetPasswordModel model, ClaimsPrincipal user);
-        void ForgotPassword(ForgotPasswordModel model, ClaimsPrincipal user);
-        Task<bool> UserExists(string Username);
+        Task<IdentityResult> ChangePassword(ChangePasswordModel model);
+        //Task<IdentityResult> SetPassword(SetPasswordModel model);
+        Task<IdentityResult> ResetPassword(ResetPasswordModel model);
+        void ForgotPassword(ForgotPasswordModel model);
+        Task<User> UserExists(string Username);
         Task<IList<string>> GetAllRoles(User user);
         Task<IdentityResult> AddRole(string id, string rolname);
         Task<IdentityResult> RemoveRole(string id, string rolname);

@@ -206,7 +206,6 @@ namespace Data.Migrations
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Enabled = table.Column<bool>(nullable: true),
-                    Role = table.Column<string>(nullable: true),
                     StateId = table.Column<int>(nullable: true),
                     CityId = table.Column<int>(nullable: true)
                 },

@@ -72,9 +72,9 @@ namespace AuthRepo
             return result;
         }
 
-        public async Task<IdentityResult> ChangePassword(ChangePasswordModel model, ClaimsPrincipal _user)
+        public async Task<IdentityResult> ChangePassword(ChangePasswordModel model)
         {
-            var user = await userManager.GetUserAsync(_user);
+            var user = await userManager.FindByEmailAsync(model.Email);
 
             var result = await userManager.ChangePasswordAsync(user, model.OldPassword,
                 model.NewPassword);
@@ -82,32 +82,34 @@ namespace AuthRepo
             return result;
         }
 
-        public async void ForgotPassword(ForgotPasswordModel model, ClaimsPrincipal _user)
+        public async void ForgotPassword(ForgotPasswordModel model)
         {
-            var user = await userManager.GetUserAsync(_user);
-            string code = await userManager.GeneratePasswordResetTokenAsync(user);
+            var user = await userManager.FindByEmailAsync(model.Email);
+            string code;
+            if (user != null)
+             code = await userManager.GeneratePasswordResetTokenAsync(user);
            // await userManager.Se(user, "Reset Password", $"Please reset your password by using this {code}");
         }
-        public async Task<IdentityResult> ResetPassword(ResetPasswordModel model, ClaimsPrincipal _user)
+        public async Task<IdentityResult> ResetPassword(ResetPasswordModel model)
         {
-            var user = await userManager.GetUserAsync(_user);
+            var user = await userManager.FindByEmailAsync(model.Email);
             var result = await userManager.ResetPasswordAsync(user,model.Code,model.Password);
 
             return result;
         }
 
-        public async Task<IdentityResult> SetPassword(SetPasswordModel model, ClaimsPrincipal _user)
+        //public async Task<IdentityResult> SetPassword(SetPasswordModel model)
+        //{
+        //    var user = await userManager.FindByEmailAsync(model.Email);
+        //    var result = await userManager.AddPasswordAsync(user, model.NewPassword);
+
+        //    return result;
+        //}
+
+
+        public async Task<User> UserExists(string Username)
         {
-            var user = await userManager.GetUserAsync(_user);
-            var result = await userManager.AddPasswordAsync(user, model.NewPassword);
-
-            return result;
-        }
-
-
-        public async Task<bool> UserExists(string Username)
-        {
-            return  await userManager.FindByNameAsync(Username) != null; 
+            return  await userManager.FindByNameAsync(Username); 
         }
 
         public async Task<IdentityResult> AddRole(string id, string rol)

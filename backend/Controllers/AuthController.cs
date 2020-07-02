@@ -58,8 +58,8 @@ namespace backend.Controllers
             {
                 return GetErrorResult(result);
             }
-
-            return Ok();
+            var user = await authRepository.UserExists(model.UserName);
+            return Ok(user.Id);
         }
 
         [HttpPost("login")]
@@ -81,7 +81,7 @@ namespace backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await authRepository.ChangePassword(model, User);
+            var result = await authRepository.ChangePassword(model);
 
             if (!result.Succeeded)
             {
@@ -97,7 +97,7 @@ namespace backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                authRepository.ForgotPassword(model, User);
+                authRepository.ForgotPassword(model);
 
                 return Ok();
             }
@@ -112,25 +112,7 @@ namespace backend.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var result = await authRepository.ResetPassword(model, User);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-        [HttpPost("addPassword")]
-        public async Task<IActionResult> SetPassword(SetPasswordModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await authRepository.SetPassword(model, User);
+            var result = await authRepository.ResetPassword(model);
 
             if (!result.Succeeded)
             {
@@ -139,33 +121,45 @@ namespace backend.Controllers
 
             return Ok();
         }
+
+        //[HttpPost("addPassword")]
+        //public async Task<IActionResult> SetPassword(SetPasswordModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var result = await authRepository.SetPassword(model, User);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
+
+        //    return Ok();
+        //}
         private async Task<IActionResult> BuildToken(User user)
         {
+            var tokenHandler = new JwtSecurityTokenHandler();
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Llave_secreta"]));
-
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+            var role = await authRepository.GetAllRoles(user);
 
-            var tempList = await authRepository.GetAllRoles(user);
-
-            foreach (var rol in tempList)
-                claims.Add(new Claim(ClaimTypes.Role, rol));
-
-            var tokeOptions = new JwtSecurityToken(
-               issuer: "http://localhost:19365",
-               audience: "http://localhost:19365",
-               claims: claims,
-               expires: DateTime.Now.AddDays(1),
-               signingCredentials: signinCredentials
-           );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return Ok(new { Token = tokenString });
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, role.First())
+                }),
+               Expires = DateTime.Now.AddDays(1),
+               SigningCredentials = signinCredentials
+           };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return Ok(new { tokenString });
         }
 
         private IActionResult GetErrorResult(IdentityResult result)

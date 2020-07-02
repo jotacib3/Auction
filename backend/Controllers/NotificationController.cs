@@ -5,29 +5,27 @@ using System.Threading.Tasks;
 using backend.Helpers;
 using Contracts;
 using ContractsDB;
+using Entities.Extensions;
+using Entities.Helpers;
+using Entities.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class NotificationController : ControllerBase
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IUnitOfWork _unitOfWork;
-        public RolesController(IRepositoryWrapper repoWrapper, IUnitOfWork unitOfWork)
+        public NotificationController(IRepositoryWrapper repoWrapper, IUnitOfWork unitOfWork)
         {
             _repoWrapper = repoWrapper;
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var roles = await _repoWrapper.Role.FindAll();
-            return Ok(roles);
-        }
+        
     }
 }

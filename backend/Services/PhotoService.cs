@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace backend.Services
 {
     public class PhotoService
     {
-         public async Task<string> Upload(IHostingEnvironment host,IFormFile file)
-        {
+         public async Task<Photo> Upload(IHostingEnvironment host,IFormFile file)
+        { 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "Uploads");
             if (!Directory.Exists(uploadsFolderPath))
                 Directory.CreateDirectory(uploadsFolderPath);
@@ -23,8 +24,8 @@ namespace backend.Services
             {
                 await file.CopyToAsync(stream);
             }
-            return filePath;
 
+            return new Photo { FileName = fileName };
         }
     }
 }

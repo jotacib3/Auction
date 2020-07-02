@@ -36,12 +36,13 @@ namespace backend
             services.ConfigureRepositoryWrapper();
             services.ConfigureAuthRepository();
             services.ConfigureUnitOfWork();
+            services.ConfigureCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSpaStaticFiles(c =>
             {
-                c.RootPath = "../../frontend/dist";
+                c.RootPath = "../Client/dist";
             });
-            //services.ConfigureSwagger();
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,24 +53,21 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
 
                 //app.UseHsts();
-                app.UseExceptionHandler(builder => 
+            app.UseExceptionHandler(builder => 
+            {
+                builder.Run(async context =>
                 {
-                    builder.Run(async context =>
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+                    if (error != null)
                     {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if (error != null)
-                        {
-                            context.Response.AddApplicationError(error.Error.Message);
-                            await context.Response.WriteAsync(error.Error.Message);
-                        }
-                    });
+                        context.Response.AddApplicationError(error.Error.Message);
+                        await context.Response.WriteAsync(error.Error.Message);
+                    }
                 });
-            }
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -87,18 +85,17 @@ namespace backend
             app.UseSpa(spa =>
             {
 
-                spa.Options.SourcePath = "../../frontend";
+                spa.Options.SourcePath = "../Client";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-            // app.UseMvc();
-
-            //app.UseSwagger();
-            //app.UseSwaggerUI(config =>
-            //    config.SwaggerEndpoint("/swagger/api/swagger.json", "Proyect Api"));
+            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+                config.SwaggerEndpoint("/swagger/api/swagger.json", "Proyect Api"));
         }
     }
 }

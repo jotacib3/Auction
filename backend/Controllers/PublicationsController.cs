@@ -32,7 +32,9 @@ namespace backend.Controllers
         public async Task<ActionResult> GetPublications([FromQuery]PagedParams param)
         {
             var queryable = _repoWrapper.Publication.Queryable()
-                                        .Include(p => p.Photos);
+                                        .Include(p => p.Photos)
+                                        .Include(p => p.Brand)
+                                        .Include(p => p.Fuel);
             
                                   
             var publications = await PagedList<Publication>.CreateAsync(queryable.OrderByDescending(
@@ -40,6 +42,8 @@ namespace backend.Controllers
 
             Response.AddPagination(publications.CurrentPage, publications.PageSize,
                                    publications.TotalCount, publications.TotalPages);
+
+
 
             return Ok(publications.ToList());
         }

@@ -52,12 +52,12 @@ namespace RepositoryDB
 
         public async Task<IQueryable<User>> FindAllInRole( string roleId)
         {
-            var tasd = await _context.UserRoles.ToListAsync();
             var userRole = await _context.UserRoles.Where(u => u.RoleId.Equals(roleId)).ToListAsync();
-            IQueryable<User> users=this._context.Users;
-            foreach (var ur in userRole)
-                users=_context.Users.Where(a => a.Id.Equals(ur.UserId));
-
+            var users = from u in this._context.Users
+                        where (from r in this._context.UserRoles
+                               where r.RoleId == roleId
+                               select r.UserId).Contains(u.Id)
+                        select u;
             return users;
             
         }
